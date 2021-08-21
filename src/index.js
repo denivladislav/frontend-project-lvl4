@@ -14,7 +14,7 @@ p.classList.add('card-text');
 p.textContent = 'It works!';
 
 const button = document.createElement('button');
-button.classList.add('btn', 'btn-secondary');
+button.classList.add('btn', 'btn-primary');
 button.type = 'button';
 button.textContent = 'add';
 p.append(button);
