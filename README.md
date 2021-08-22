@@ -1,5 +1,7 @@
-### Hexlet tests and linter status:
+### Chat:
 [![Actions Status](https://github.com/denivladislav/frontend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/denivladislav/frontend-project-lvl4/actions)
+[![Node CI](https://github.com/denivladislav/frontend-project-lvl4/actions/workflows/nodejs.yml/badge.svg)](https://github.com/denivladislav/frontend-project-lvl4/actions/workflows/nodejs.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/aba531977ec7261db069/maintainability)](https://codeclimate.com/github/denivladislav/frontend-project-lvl4/maintainability)
 
 # project-frontend-l4-server
 
