@@ -7,13 +7,32 @@ import {
   Col,
   Container,
 } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
+import axios from 'axios';
+import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
 
 export default () => {
+  const auth = useAuth();
+
+  if (auth.loggedIn) {
+    return (
+      <h4>
+        You are already logged in. Go to
+        {' '}
+        <a href="/">chat page</a>
+      </h4>
+    );
+  }
+
+  const history = useHistory();
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  const [authFailed, setAuthFailed] = useState(false);
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
@@ -27,10 +46,27 @@ export default () => {
       password: '',
     },
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      setAuthFailed(false);
+
+      try {
+        const res = await axios.post(routes.loginPath(), values);
+        localStorage.setItem('userId', JSON.stringify(res.data));
+        console.log(localStorage);
+        auth.logIn();
+        history.replace('/');
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
+
+  console.log('Auth', auth);
 
   return (
     <Container>
@@ -48,6 +84,7 @@ export default () => {
                 autoComplete="username"
                 required
                 ref={inputRef}
+                isInvalid={authFailed}
               />
             </Form.Group>
             {formik.errors.username && formik.touched.username ? (
@@ -64,6 +101,7 @@ export default () => {
                 id="password"
                 autoComplete="current-password"
                 required
+                isInvalid={authFailed}
               />
               <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
             </Form.Group>
