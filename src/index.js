@@ -9,7 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
 const render = () => {
   const vdom = init();
   ReactDOM.render(
-    vdom, document.getElementById('chat'),
+    vdom, document.querySelector('#chat'),
   );
 };
 
