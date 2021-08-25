@@ -21,8 +21,10 @@
   "license": "ISC",
   "homepage": "",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
+    "classnames": "^2.3.1",
     "core-js": "^3.12.1",
     "debug": "^4.3.1",
     "fastify": "^3.15.1",
@@ -43,6 +45,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.5",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "regenerator-runtime": "^0.13.7",
     "yup": "^0.32.9"
