@@ -10,7 +10,7 @@ import {
   Button,
   Navbar,
   Nav,
-  Container,
+  Container, Col,
 } from 'react-bootstrap';
 import LoginPage from './LoginPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
@@ -41,8 +41,8 @@ const AuthButton = () => {
 
   return (
     auth.loggedIn
-      ? <Button onClick={auth.logOut}>Log out</Button>
-      : <Button as={Link} to="/login">Log in</Button>
+      ? <Button onClick={auth.logOut} className="btn-secondary">Log out</Button>
+      : <Button as={Link} to="/login" className="btn-secondary">Log in</Button>
   );
 };
 
@@ -64,29 +64,31 @@ console.log('Enter', localStorage);
 export default () => (
   <AuthProvider>
     <Router>
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand as={Link} to="/">ChatPage</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/login">LoginPage</Nav.Link>
-            <Nav.Link as={Link} to="/404">NotFoundPage</Nav.Link>
-          </Nav>
-          <AuthButton />
+      <Col className="d-flex flex-column h-100">
+        <Navbar bg="light" expand="lg">
+          <Container>
+            <Navbar.Brand as={Link} to="/">ChatPage</Navbar.Brand>
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/login">LoginPage</Nav.Link>
+              <Nav.Link as={Link} to="/404">NotFoundPage</Nav.Link>
+            </Nav>
+            <AuthButton />
+          </Container>
+        </Navbar>
+        <Container className="h-100 overflow-hidden rounded shadow my-4">
+          <Switch>
+            <ChatRoute exact path="/">
+              <ChatPage />
+            </ChatRoute>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Route path="*">
+              <NotFoundPage />
+            </Route>
+          </Switch>
         </Container>
-      </Navbar>
-      <div className="container p-3">
-        <Switch>
-          <ChatRoute exact path="/">
-            <ChatPage />
-          </ChatRoute>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="*">
-            <NotFoundPage />
-          </Route>
-        </Switch>
-      </div>
+      </Col>
     </Router>
   </AuthProvider>
 );
