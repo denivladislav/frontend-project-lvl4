@@ -10,7 +10,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
 export default () => {
@@ -52,7 +52,6 @@ export default () => {
       try {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
-        console.log(localStorage);
         auth.logIn();
         history.replace('/');
       } catch (err) {

@@ -15,8 +15,8 @@ import {
 import LoginPage from './LoginPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import ChatPage from './ChatPage.jsx';
-import authContext from '../contexts/index.jsx';
-import useAuth from '../hooks/index.jsx';
+import authContext from '../contexts/authContext.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = localStorage.userId
@@ -58,8 +58,6 @@ const ChatRoute = ({ children, path }) => {
     />
   );
 };
-
-console.log('Enter', localStorage);
 
 export default () => (
   <AuthProvider>

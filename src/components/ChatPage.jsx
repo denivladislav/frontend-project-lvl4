@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useFormik } from 'formik';
 import {
   Row,
   Col,
   Button,
   Nav,
   Form,
+  InputGroup,
 } from 'react-bootstrap';
 import axios from 'axios';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannelsData, setCurrentChannel } from '../slices/channelsSlice.js';
 import routes from '../routes.js';
+import useSocket from '../hooks/useSocket.jsx';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -23,11 +26,14 @@ const getAuthHeader = () => {
 };
 
 export default () => {
+  const socket = useSocket();
   const dispatch = useDispatch();
+  const inputRef = useRef();
   useEffect(() => {
+    inputRef.current.focus();
     const fetchContent = async () => {
       const { data } = await axios.get(routes.dataPath(), { headers: getAuthHeader() });
-      console.log(data);
+      console.log('DATA FROM SERVER', data);
       dispatch(setChannelsData(data));
     };
 
@@ -37,9 +43,18 @@ export default () => {
   const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
-  const channelsData = useSelector((state) => state.channelsData);
-  console.log('currentChannel', currentChannel);
-  console.log('channelsData', channelsData);
+  const myState = useSelector((state) => state);
+  console.log('myState', myState);
+
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit: (values, { resetForm }) => {
+      socket.emit('newMessage', { message: values.message });
+      resetForm({ values: '' });
+    },
+  });
 
   return (
     <Row className="h-100">
@@ -50,11 +65,10 @@ export default () => {
         </Col>
         <Nav fill variant="pills" className="flex-column px-2">
           {channels.map((channel) => {
-            const buttonClass = cn('w-100', 'rounded-0', 'text-start', {
+            const buttonClass = cn('w-100', 'mb-1', 'rounded-0', 'text-start', {
               'btn-light': channel.id !== currentChannelId,
               'btn-secondary': channel.id === currentChannelId,
             });
-            console.log('XX', channel.id);
             return (
               <Nav.Item key={channel.id} className="w-100">
                 <Button
@@ -80,9 +94,19 @@ export default () => {
             <p>Message One here</p>
           </div>
           <div className="mt-auto px-5 py-3">
-            <Form.Group>
-              <Form.Control />
-            </Form.Group>
+            <Form onSubmit={formik.handleSubmit}>
+              <InputGroup>
+                <Form.Control
+                  onChange={formik.handleChange}
+                  value={formik.values.message}
+                  placeholder="Enter your message here"
+                  name="message"
+                  id="message"
+                  ref={inputRef}
+                />
+                <Button type="submit" variant="outline-secondary">➔</Button>
+              </InputGroup>
+            </Form>
           </div>
         </Col>
       </Col>
