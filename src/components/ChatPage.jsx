@@ -12,7 +12,9 @@ import axios from 'axios';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannelsData, setCurrentChannel } from '../slices/channelsSlice.js';
+import { addNewMessage } from '../slices/messagesSlice.js';
 import routes from '../routes.js';
+// import useAuth from '../hooks/useAuth.jsx';
 import useSocket from '../hooks/useSocket.jsx';
 
 const getAuthHeader = () => {
@@ -29,6 +31,8 @@ export default () => {
   const socket = useSocket();
   const dispatch = useDispatch();
   const inputRef = useRef();
+  // const auth = useAuth();
+  // console.log('AUTH', auth);
   useEffect(() => {
     inputRef.current.focus();
     const fetchContent = async () => {
@@ -43,15 +47,31 @@ export default () => {
   const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
+  const messages = useSelector((state) => state.messagesData.messages);
+  console.log('Messages', messages);
+  const currentChannelMessages = messages
+    .filter((message) => message.channelId === currentChannelId);
   const myState = useSelector((state) => state);
+  const { username } = JSON.parse(localStorage.getItem('userId'));
   console.log('myState', myState);
 
   const formik = useFormik({
     initialValues: {
       message: '',
+      username,
+      currentChannelId,
     },
     onSubmit: (values, { resetForm }) => {
-      socket.emit('newMessage', { message: values.message });
+      socket.emit('newMessage', {
+        message: values.message,
+        username: values.username,
+        channelId: currentChannelId,
+      });
+      dispatch((addNewMessage({
+        message: values.message,
+        username: values.username,
+        channelId: currentChannelId,
+      })));
       resetForm({ values: '' });
     },
   });
@@ -88,10 +108,21 @@ export default () => {
             <p>
               <b>{currentChannel ? currentChannel.name : null}</b>
             </p>
-            <span>number of messages here</span>
+            <span>
+              Number of messages:
+              {' '}
+              {currentChannelMessages.length}
+            </span>
           </div>
           <div id="messages-box" className="chat-messages overflow-auto px-5">
-            <p>Message One here</p>
+            {currentChannelMessages.map((msg) => (
+              <p>
+                {msg.username}
+                :
+                {' '}
+                {msg.message}
+              </p>
+            ))}
           </div>
           <div className="mt-auto px-5 py-3">
             <Form onSubmit={formik.handleSubmit}>
