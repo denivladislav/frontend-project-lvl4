@@ -5,17 +5,32 @@ import io from 'socket.io-client';
 import { Provider } from 'react-redux';
 import App from './components/App.jsx';
 import store from './store.js';
-import socketContext from './contexts/socketContext.jsx';
+import ApiContext from './contexts/apiContext.jsx';
+import { addNewMessage } from './slices/messagesSlice.js';
 
 import '../assets/application.scss';
 
+const initApi = (socket, store) => {
+  const api = {
+    sendMessage: (newMessage) => socket.emit('newMessage', newMessage),
+  };
+
+  socket.on('newMessage', (newMessage) => {
+    store.dispatch(addNewMessage(newMessage));
+  });
+
+  return api;
+};
+
 export default () => {
   const socket = new io();
+  const api = initApi(socket, store);
+
   return (
-    <socketContext.Provider value={socket}>
+    <ApiContext.Provider value={api}>
       <Provider store={store}>
         <App />
       </Provider>
-    </socketContext.Provider>
+    </ApiContext.Provider>
   );
 };

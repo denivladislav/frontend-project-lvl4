@@ -14,5 +14,3 @@ const render = () => {
 };
 
 render();
-
-console.log('it works!');
