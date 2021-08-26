@@ -21,15 +21,31 @@ import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(_.has(localStorage, 'userId'));
-  console.log('AuthProvider, loggedIn:', loggedIn);
+
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
 
+  const getAuthHeader = () => {
+    const userId = JSON.parse(localStorage.getItem('userId'));
+
+    if (userId && userId.token) {
+      return { Authorization: `Bearer ${userId.token}` };
+    }
+
+    return {};
+  };
+
   return (
-    <authContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <authContext.Provider value={{
+      loggedIn,
+      logIn,
+      logOut,
+      getAuthHeader,
+    }}
+    >
       {children}
     </authContext.Provider>
   );
