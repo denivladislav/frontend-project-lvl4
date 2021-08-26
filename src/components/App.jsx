@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import _ from 'lodash';
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,9 +20,7 @@ import authContext from '../contexts/authContext.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = localStorage.userId
-    ? useState(true)
-    : useState(false);
+  const [loggedIn, setLoggedIn] = useState(_.has(localStorage, 'userId'));
   console.log('AuthProvider, loggedIn:', loggedIn);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {

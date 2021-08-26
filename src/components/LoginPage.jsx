@@ -52,7 +52,7 @@ export default () => {
       try {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
+        auth.logIn(res.data.username);
         history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
@@ -64,8 +64,6 @@ export default () => {
       }
     },
   });
-
-  console.log('Auth', auth);
 
   return (
     <Container>

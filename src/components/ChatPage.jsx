@@ -12,10 +12,8 @@ import axios from 'axios';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannelsData, setCurrentChannel } from '../slices/channelsSlice.js';
-import { addNewMessage } from '../slices/messagesSlice.js';
 import routes from '../routes.js';
-// import useAuth from '../hooks/useAuth.jsx';
-import useSocket from '../hooks/useSocket.jsx';
+import useApi from '../hooks/useApi.jsx';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -28,31 +26,26 @@ const getAuthHeader = () => {
 };
 
 export default () => {
-  const socket = useSocket();
+  const api = useApi();
   const dispatch = useDispatch();
   const inputRef = useRef();
-  // const auth = useAuth();
-  // console.log('AUTH', auth);
   useEffect(() => {
     inputRef.current.focus();
     const fetchContent = async () => {
       const { data } = await axios.get(routes.dataPath(), { headers: getAuthHeader() });
-      console.log('DATA FROM SERVER', data);
       dispatch(setChannelsData(data));
     };
 
     fetchContent();
   }, []);
 
+  const { username } = JSON.parse(localStorage.getItem('userId'));
   const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
-  const messages = useSelector((state) => state.messagesData.messages);
-  console.log('Messages', messages);
-  const currentChannelMessages = messages
+  const currentChannelMessages = useSelector((state) => state.messagesData.messages)
     .filter((message) => message.channelId === currentChannelId);
   const myState = useSelector((state) => state);
-  const { username } = JSON.parse(localStorage.getItem('userId'));
   console.log('myState', myState);
 
   const formik = useFormik({
@@ -62,16 +55,12 @@ export default () => {
       currentChannelId,
     },
     onSubmit: (values, { resetForm }) => {
-      socket.emit('newMessage', {
+      const newMessage = {
         message: values.message,
         username: values.username,
         channelId: currentChannelId,
-      });
-      dispatch((addNewMessage({
-        message: values.message,
-        username: values.username,
-        channelId: currentChannelId,
-      })));
+      };
+      api.sendMessage(newMessage);
       resetForm({ values: '' });
     },
   });
@@ -116,7 +105,7 @@ export default () => {
           </div>
           <div id="messages-box" className="chat-messages overflow-auto px-5">
             {currentChannelMessages.map((msg) => (
-              <p>
+              <p key={msg.id}>
                 {msg.username}
                 :
                 {' '}
