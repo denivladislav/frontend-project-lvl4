@@ -7,6 +7,10 @@ import {
   Nav,
   Form,
   InputGroup,
+  ButtonGroup,
+  DropdownButton,
+  Dropdown,
+  ListGroup,
 } from 'react-bootstrap';
 import axios from 'axios';
 import cn from 'classnames';
@@ -79,24 +83,29 @@ export default () => {
               ＋
             </Button>
           </Col>
-          <Nav fill variant="pills" className="flex-column px-2">
+          <ListGroup fill variant="pills" className="flex-column px-2">
             {channels.map((channel) => {
-              const buttonClass = cn('w-100', 'mb-1', 'rounded-0', 'text-start', {
-                'btn-light': channel.id !== currentChannelId,
-                'btn-secondary': channel.id === currentChannelId,
-              });
+              const buttonClass = cn('w-100', 'mb-1', 'rounded-0', 'text-start');
+              const dropdownClass = cn('mb-1', 'rounded-0', 'text-start');
+              const variant = channel.id === currentChannelId ? 'secondary' : 'light';
               return (
-                <Nav.Item key={channel.id} className="w-100">
+                <ButtonGroup key={channel.id} className="w-100">
                   <Button
                     onClick={() => dispatch(setCurrentChannel({ id: channel.id }))}
+                    variant={variant}
                     className={buttonClass}
                   >
                     {channel.name}
                   </Button>
-                </Nav.Item>
+                  <DropdownButton variant={variant} className={dropdownClass} as={ButtonGroup}>
+                    <Dropdown.Item eventKey="1">
+                      Rename Channel
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </ButtonGroup>
               );
             })}
-          </Nav>
+          </ListGroup>
         </Col>
         <Col className="p-0 h-100">
           <Col className="flex-column d-flex h-100">
