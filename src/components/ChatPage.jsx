@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import {
   Row,
@@ -7,15 +7,21 @@ import {
   Nav,
   Form,
   InputGroup,
-  Modal,
 } from 'react-bootstrap';
 import axios from 'axios';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannelsData, setCurrentChannel } from '../slices/channelsSlice.js';
+import { openModal } from '../slices/modalSlice.js';
 import routes from '../routes.js';
 import useApi from '../hooks/useApi.jsx';
 import useAuth from '../hooks/useAuth.jsx';
+import getModal from './modals/index.js';
+
+const Modal = ({ modalType }) => {
+  const ModalComponent = getModal(modalType);
+  return ModalComponent ? <ModalComponent /> : null;
+};
 
 export default () => {
   const api = useApi();
@@ -32,16 +38,13 @@ export default () => {
     fetchContent();
   }, []);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const { username } = JSON.parse(localStorage.getItem('userId'));
   const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
   const currentChannelMessages = useSelector((state) => state.messagesData.messages)
     .filter((message) => message.channelId === currentChannelId);
+  const modalType = useSelector((state) => state.modalInfo.modalType);
   const myState = useSelector((state) => state);
   console.log('myState', myState);
 
@@ -69,12 +72,7 @@ export default () => {
           <Col className="d-flex justify-content-between mb-2 ps-2 pe-2">
             <Col className="ps-2">Channels</Col>
             <Button
-              onClick={() => {
-                handleShow();
-                api.addChannel({
-                  name: 'New Channel',
-                });
-              }}
+              onClick={() => dispatch(openModal({ modalType: 'addChannel' }))}
               size="sm"
               className="px-1 py-0 btn-secondary"
             >
@@ -141,20 +139,7 @@ export default () => {
         </Col>
       </Row>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>You just added New Channel!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Modal modalType={modalType} />
     </>
   );
 };

@@ -21,7 +21,6 @@ import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(_.has(localStorage, 'userId'));
-
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('userId');

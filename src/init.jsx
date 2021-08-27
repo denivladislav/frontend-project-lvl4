@@ -11,24 +11,25 @@ import { addNewChannel } from './slices/channelsSlice.js';
 
 import '../assets/application.scss';
 
-const initApi = (socket, store) => {
+const initApi = (socket, apiStore) => {
   const api = {
     sendMessage: (newMessage) => socket.emit('newMessage', newMessage),
     addChannel: (newChannel) => socket.emit('newChannel', newChannel),
   };
 
   socket.on('newMessage', (newMessage) => {
-    store.dispatch(addNewMessage(newMessage));
+    apiStore.dispatch(addNewMessage(newMessage));
   });
 
   socket.on('newChannel', (newChannel) => {
-    store.dispatch(addNewChannel(newChannel));
+    apiStore.dispatch(addNewChannel(newChannel));
   });
 
   return api;
 };
 
 export default () => {
+  // eslint-disable-next-line new-cap
   const socket = new io();
   const api = initApi(socket, store);
 
