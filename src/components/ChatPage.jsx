@@ -4,13 +4,13 @@ import {
   Row,
   Col,
   Button,
-  Nav,
   Form,
   InputGroup,
   ButtonGroup,
-  DropdownButton,
   Dropdown,
+  DropdownButton,
   ListGroup,
+  Nav,
 } from 'react-bootstrap';
 import axios from 'axios';
 import cn from 'classnames';
@@ -22,9 +22,9 @@ import useApi from '../hooks/useApi.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from './modals/index.js';
 
-const Modal = ({ modalType }) => {
+const Modal = ({ modalType, channel }) => {
   const ModalComponent = getModal(modalType);
-  return ModalComponent ? <ModalComponent /> : null;
+  return ModalComponent ? <ModalComponent modalType={modalType} channel={channel} /> : null;
 };
 
 export default () => {
@@ -32,15 +32,6 @@ export default () => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const auth = useAuth();
-  useEffect(() => {
-    inputRef.current.focus();
-    const fetchContent = async () => {
-      const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-      dispatch(setChannelsData(data));
-    };
-
-    fetchContent();
-  }, []);
 
   const { username } = JSON.parse(localStorage.getItem('userId'));
   const channels = useSelector((state) => state.channelsData.channels);
@@ -51,6 +42,19 @@ export default () => {
   const modalType = useSelector((state) => state.modalInfo.modalType);
   const myState = useSelector((state) => state);
   console.log('myState', myState);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
+      dispatch(setChannelsData(data));
+    };
+
+    fetchContent();
+  }, []);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [currentChannelId]);
 
   const formik = useFormik({
     initialValues: {
@@ -69,6 +73,17 @@ export default () => {
     },
   });
 
+  const getDropdownComponent = ({ variant, dropdownClass }) => (
+    <DropdownButton title="" variant={variant} className={dropdownClass} as={ButtonGroup}>
+      <Dropdown.Item onClick={() => dispatch(openModal({ modalType: 'renameChannel' }))} eventKey="1">
+        Rename Channel
+      </Dropdown.Item>
+      <Dropdown.Item onClick={() => dispatch(openModal({ modalType: 'removeChannel' }))} eventKey="1">
+        Remove Channel
+      </Dropdown.Item>
+    </DropdownButton>
+  );
+
   return (
     <>
       <Row className="h-100">
@@ -83,26 +98,26 @@ export default () => {
               ＋
             </Button>
           </Col>
-          <ListGroup fill variant="pills" className="flex-column px-2">
+          <ListGroup variant="pills" className="justify-content-between flex-column px-2">
             {channels.map((channel) => {
-              const buttonClass = cn('w-100', 'mb-1', 'rounded-0', 'text-start');
-              const dropdownClass = cn('mb-1', 'rounded-0', 'text-start');
+              const buttonClass = cn('w-100', 'mb-1', 'rounded-0', 'text-start', 'text-truncate');
+              const dropdownClass = cn('mb-1');
               const variant = channel.id === currentChannelId ? 'secondary' : 'light';
               return (
-                <ButtonGroup key={channel.id} className="w-100">
-                  <Button
-                    onClick={() => dispatch(setCurrentChannel({ id: channel.id }))}
-                    variant={variant}
-                    className={buttonClass}
-                  >
-                    {channel.name}
-                  </Button>
-                  <DropdownButton variant={variant} className={dropdownClass} as={ButtonGroup}>
-                    <Dropdown.Item eventKey="1">
-                      Rename Channel
-                    </Dropdown.Item>
-                  </DropdownButton>
-                </ButtonGroup>
+                <Nav.Item className="w-100">
+                  <ButtonGroup key={channel.id} className="d-flex dropdown">
+                    <Button
+                      onClick={() => dispatch(setCurrentChannel({ id: channel.id }))}
+                      variant={variant}
+                      className={buttonClass}
+                    >
+                      {channel.name}
+                    </Button>
+                    {channel.removable
+                      ? getDropdownComponent({ variant, dropdownClass })
+                      : null }
+                  </ButtonGroup>
+                </Nav.Item>
               );
             })}
           </ListGroup>
@@ -122,7 +137,7 @@ export default () => {
             <div id="messages-box" className="chat-messages overflow-auto px-5">
               {currentChannelMessages.map((msg) => (
                 <p key={msg.id}>
-                  {msg.username}
+                  <b>{msg.username}</b>
                   :
                   {' '}
                   {msg.message}
@@ -139,6 +154,7 @@ export default () => {
                     name="message"
                     id="message"
                     ref={inputRef}
+                    autoFocus
                   />
                   <Button type="submit" variant="outline-secondary">➔</Button>
                 </InputGroup>
@@ -148,7 +164,7 @@ export default () => {
         </Col>
       </Row>
 
-      <Modal modalType={modalType} />
+      <Modal modalType={modalType} channel={currentChannel} />
     </>
   );
 };
