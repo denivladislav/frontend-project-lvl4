@@ -7,10 +7,11 @@ import {
   Form,
   InputGroup,
 } from 'react-bootstrap';
+import * as Yup from 'yup';
 import useApi from '../../hooks/useApi.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 
-export default () => {
+export default ({ channelsNames }) => {
   const dispatch = useDispatch();
   const api = useApi();
   const inputRef = useRef();
@@ -18,13 +19,25 @@ export default () => {
     inputRef.current.focus();
   }, []);
 
+  const AddChannelSchema = Yup.object().shape({
+    name: Yup.mixed()
+      .notOneOf(channelsNames, 'This name already exists')
+      .required('Channel name cannot be empty'),
+  });
+
   const formik = useFormik({
     initialValues: {
       name: '',
     },
+    validationSchema: AddChannelSchema,
     onSubmit: (values) => {
-      api.addChannel({ name: values.name });
-      dispatch(closeModal());
+      try {
+        api.addChannel({ name: values.name });
+        dispatch(closeModal());
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
     },
   });
   return (
@@ -43,7 +56,11 @@ export default () => {
               required
               ref={inputRef}
             />
+            <Form.Control.Feedback type="invalid">name already exists</Form.Control.Feedback>
           </InputGroup>
+          {formik.errors.name && formik.touched.name
+            ? (<div>{formik.errors.name}</div>)
+            : null}
         </Form>
       </Modal.Body>
       <Modal.Footer>

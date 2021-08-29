@@ -22,9 +22,11 @@ import useApi from '../hooks/useApi.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from './modals/index.js';
 
-const Modal = ({ modalType, channel }) => {
+const Modal = ({ modalType, channel, channelsNames }) => {
   const ModalComponent = getModal(modalType);
-  return ModalComponent ? <ModalComponent modalType={modalType} channel={channel} /> : null;
+  return ModalComponent
+    ? <ModalComponent modalType={modalType} channel={channel} channelsNames={channelsNames} />
+    : null;
 };
 
 export default () => {
@@ -36,6 +38,7 @@ export default () => {
 
   const { username } = JSON.parse(localStorage.getItem('userId'));
   const channels = useSelector((state) => state.channelsData.channels);
+  const channelsNames = channels.map((c) => c.name);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
   const currentChannelMessages = useSelector((state) => state.messagesData.messages)
@@ -43,6 +46,7 @@ export default () => {
   const modalType = useSelector((state) => state.modalInfo.modalType);
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const myState = useSelector((state) => state);
+  console.log('channelsNames', channelsNames);
   console.log('myState', myState);
 
   useEffect(() => {
@@ -172,7 +176,7 @@ export default () => {
         </Col>
       </Row>
 
-      <Modal modalType={modalType} channel={managedChannel} />
+      <Modal modalType={modalType} managedChannel={managedChannel} channelsNames={channelsNames} />
     </>
   );
 };
