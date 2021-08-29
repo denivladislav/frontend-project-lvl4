@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   modalType: null,
+  managedChannel: null,
 };
 
 export const modalSlice = createSlice({
@@ -10,9 +11,11 @@ export const modalSlice = createSlice({
   reducers: {
     openModal: (state, { payload }) => {
       state.modalType = payload.modalType;
+      state.managedChannel = payload.managedChannel;
     },
     closeModal: (state) => {
       state.modalType = null;
+      state.managedChannel = null;
     },
   },
 });

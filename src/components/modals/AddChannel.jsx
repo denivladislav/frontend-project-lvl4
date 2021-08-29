@@ -50,7 +50,7 @@ export default () => {
         <Button variant="secondary" onClick={() => dispatch(closeModal())}>
           Close
         </Button>
-        <Button variant="primary" onClick={formik.handleSubmit}>
+        <Button disabled={formik.isSubmitting} variant="primary" onClick={formik.handleSubmit}>
           Submit
         </Button>
       </Modal.Footer>

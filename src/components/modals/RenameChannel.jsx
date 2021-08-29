@@ -15,7 +15,7 @@ export default ({ channel }) => {
   const api = useApi();
   const inputRef = useRef();
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.select();
   }, []);
 
   const formik = useFormik({
@@ -27,6 +27,7 @@ export default ({ channel }) => {
       dispatch(closeModal());
     },
   });
+
   return (
     <Modal centered show onHide={() => dispatch(closeModal())}>
       <Modal.Header closeButton>
@@ -50,7 +51,7 @@ export default ({ channel }) => {
         <Button variant="secondary" onClick={() => dispatch(closeModal())}>
           Close
         </Button>
-        <Button variant="primary" onClick={formik.handleSubmit}>
+        <Button disabled={formik.isSubmitting} variant="primary" onClick={formik.handleSubmit}>
           Submit
         </Button>
       </Modal.Footer>

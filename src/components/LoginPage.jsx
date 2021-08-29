@@ -48,7 +48,6 @@ export default () => {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       setAuthFailed(false);
-
       try {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
@@ -102,7 +101,7 @@ export default () => {
               />
               <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
             </Form.Group>
-            <Button type="submit" variant="outline-primary">Submit</Button>
+            <Button disabled={formik.isSubmitting} type="submit" variant="outline-primary">Submit</Button>
           </Form>
         </Col>
       </Row>

@@ -31,6 +31,7 @@ export default () => {
   const api = useApi();
   const dispatch = useDispatch();
   const inputRef = useRef();
+  const lastMessageRef = useRef();
   const auth = useAuth();
 
   const { username } = JSON.parse(localStorage.getItem('userId'));
@@ -40,6 +41,7 @@ export default () => {
   const currentChannelMessages = useSelector((state) => state.messagesData.messages)
     .filter((message) => message.channelId === currentChannelId);
   const modalType = useSelector((state) => state.modalInfo.modalType);
+  const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const myState = useSelector((state) => state);
   console.log('myState', myState);
 
@@ -55,6 +57,10 @@ export default () => {
   useEffect(() => {
     inputRef.current.focus();
   }, [currentChannelId]);
+
+  useEffect(() => {
+    lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -73,12 +79,12 @@ export default () => {
     },
   });
 
-  const getDropdownComponent = ({ variant, dropdownClass }) => (
+  const getDropdownComponent = ({ variant, dropdownClass, channel }) => (
     <DropdownButton title="" variant={variant} className={dropdownClass} as={ButtonGroup}>
-      <Dropdown.Item onClick={() => dispatch(openModal({ modalType: 'renameChannel' }))} eventKey="1">
+      <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'renameChannel', managedChannel: channel }))} eventKey="1">
         Rename Channel
       </Dropdown.Item>
-      <Dropdown.Item onClick={() => dispatch(openModal({ modalType: 'removeChannel' }))} eventKey="1">
+      <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'removeChannel', managedChannel: channel }))} eventKey="2">
         Remove Channel
       </Dropdown.Item>
     </DropdownButton>
@@ -104,8 +110,8 @@ export default () => {
               const dropdownClass = cn('mb-1');
               const variant = channel.id === currentChannelId ? 'secondary' : 'light';
               return (
-                <Nav.Item className="w-100">
-                  <ButtonGroup key={channel.id} className="d-flex dropdown">
+                <Nav.Item key={channel.id} className="w-100">
+                  <ButtonGroup className="d-flex dropdown">
                     <Button
                       onClick={() => dispatch(setCurrentChannel({ id: channel.id }))}
                       variant={variant}
@@ -114,7 +120,7 @@ export default () => {
                       {channel.name}
                     </Button>
                     {channel.removable
-                      ? getDropdownComponent({ variant, dropdownClass })
+                      ? getDropdownComponent({ variant, dropdownClass, channel })
                       : null }
                   </ButtonGroup>
                 </Nav.Item>
@@ -142,7 +148,9 @@ export default () => {
                   {' '}
                   {msg.message}
                 </p>
+
               ))}
+              <div ref={lastMessageRef} />
             </div>
             <div className="mt-auto px-5 py-3">
               <Form onSubmit={formik.handleSubmit}>
@@ -164,7 +172,7 @@ export default () => {
         </Col>
       </Row>
 
-      <Modal modalType={modalType} channel={currentChannel} />
+      <Modal modalType={modalType} channel={managedChannel} />
     </>
   );
 };

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   channels: [],
-  currentChannelId: 0,
+  currentChannelId: 1,
 };
 
 export const channelsSlice = createSlice({
@@ -27,6 +27,7 @@ export const channelsSlice = createSlice({
     },
     removeChannel: (state, { payload }) => {
       state.channels = state.channels.filter((channel) => channel.id !== payload.id);
+      state.currentChannelId = 1;
     },
   },
 });

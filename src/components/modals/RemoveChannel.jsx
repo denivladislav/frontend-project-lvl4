@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Modal,
@@ -10,9 +10,9 @@ import { closeModal } from '../../slices/modalSlice.js';
 export default ({ channel }) => {
   const dispatch = useDispatch();
   const api = useApi();
-
+  const [isSubmitting, setSubmitting] = useState(false);
   const handleRemoveChannel = () => {
-    console.log('Triggered!');
+    setSubmitting(true);
     api.removeChannel(channel.id);
     dispatch(closeModal());
   };
@@ -29,7 +29,7 @@ export default ({ channel }) => {
         <Button variant="secondary" onClick={() => dispatch(closeModal())}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleRemoveChannel}>
+        <Button disabled={isSubmitting} variant="danger" onClick={handleRemoveChannel}>
           Submit
         </Button>
       </Modal.Footer>
