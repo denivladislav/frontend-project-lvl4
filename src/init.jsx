@@ -1,8 +1,11 @@
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
+import i18n from 'i18next';
+import { I18nextProvider } from 'react-i18next';
 import React from 'react';
 import io from 'socket.io-client';
 import { Provider } from 'react-redux';
+import translationRU from './locales/ru.json';
 import App from './components/App.jsx';
 import store from './store.js';
 import ApiContext from './contexts/apiContext.jsx';
@@ -38,16 +41,28 @@ const initApi = (socket, apiStore) => {
   return api;
 };
 
-export default () => {
+export default async () => {
+  const i18nInstance = i18n.createInstance();
+  await i18nInstance.init({
+    lng: 'ru',
+    // debug: false,
+    resources: {
+      ru: {
+        translation: translationRU,
+      },
+    },
+  });
   // eslint-disable-next-line new-cap
   const socket = new io();
   const api = initApi(socket, store);
 
   return (
-    <ApiContext.Provider value={api}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ApiContext.Provider>
+    <I18nextProvider i18n={i18nInstance}>
+      <ApiContext.Provider value={api}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ApiContext.Provider>
+    </I18nextProvider>
   );
 };
