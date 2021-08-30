@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   channels: [],
   currentChannelId: 1,
+  username: '',
 };
 
 export const channelsSlice = createSlice({
@@ -10,18 +11,21 @@ export const channelsSlice = createSlice({
   initialState,
   reducers: {
     setChannelsData: (state, { payload }) => {
+      console.log(payload);
       state.channels = payload.channels;
       state.currentChannelId = payload.currentChannelId;
+      state.username = payload.username;
     },
     setCurrentChannel: (state, { payload }) => {
       state.currentChannelId = payload.id;
     },
     addNewChannel: (state, { payload }) => {
       state.channels.push(payload);
-      state.currentChannelId = payload.id;
+      if (state.username === payload.username) {
+        state.currentChannelId = payload.id;
+      }
     },
     renameChannel: (state, { payload }) => {
-      console.log('rename in slice!');
       const currentChannel = state.channels.find((channel) => channel.id === payload.id);
       currentChannel.name = payload.name;
     },

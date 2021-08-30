@@ -22,10 +22,19 @@ import useApi from '../hooks/useApi.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from './modals/index.js';
 
-const Modal = ({ modalType, channel, channelsNames }) => {
+const Modal = ({
+  modalType, channel, channelsNames, username,
+}) => {
   const ModalComponent = getModal(modalType);
   return ModalComponent
-    ? <ModalComponent modalType={modalType} channel={channel} channelsNames={channelsNames} />
+    ? (
+      <ModalComponent
+        modalType={modalType}
+        channel={channel}
+        username={username}
+        channelsNames={channelsNames}
+      />
+    )
     : null;
 };
 
@@ -46,12 +55,13 @@ export default () => {
   const modalType = useSelector((state) => state.modalInfo.modalType);
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const myState = useSelector((state) => state);
-  console.log('channelsNames', channelsNames);
   console.log('myState', myState);
+  console.log('username', username);
 
   useEffect(() => {
     const fetchContent = async () => {
       const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
+      data.username = username;
       dispatch(setChannelsData(data));
     };
 
@@ -83,7 +93,9 @@ export default () => {
     },
   });
 
-  const getDropdownComponent = ({ variant, dropdownClass, channel }) => (
+  const getDropdownComponent = ({
+    variant, dropdownClass, channel,
+  }) => (
     <DropdownButton title="" variant={variant} className={dropdownClass} as={ButtonGroup}>
       <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'renameChannel', managedChannel: channel }))} eventKey="1">
         Rename Channel
@@ -176,7 +188,12 @@ export default () => {
         </Col>
       </Row>
 
-      <Modal modalType={modalType} managedChannel={managedChannel} channelsNames={channelsNames} />
+      <Modal
+        modalType={modalType}
+        username={username}
+        channel={managedChannel}
+        channelsNames={channelsNames}
+      />
     </>
   );
 };
