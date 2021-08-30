@@ -16,6 +16,7 @@ import {
 import LoginPage from './LoginPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import ChatPage from './ChatPage.jsx';
+import SignUpPage from './SignUpPage.jsx';
 import authContext from '../contexts/authContext.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
@@ -82,6 +83,7 @@ export default () => (
             <Navbar.Brand as={Link} to="/">ChatPage</Navbar.Brand>
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/login">LoginPage</Nav.Link>
+              <Nav.Link as={Link} to="/signup">SignUpPage</Nav.Link>
               <Nav.Link as={Link} to="/404">NotFoundPage</Nav.Link>
             </Nav>
             <AuthButton />
@@ -94,6 +96,9 @@ export default () => (
             </ChatRoute>
             <Route path="/login">
               <LoginPage />
+            </Route>
+            <Route path="/signup">
+              <SignUpPage />
             </Route>
             <Route path="*">
               <NotFoundPage />
