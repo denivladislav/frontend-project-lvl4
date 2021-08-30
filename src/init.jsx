@@ -5,6 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import React from 'react';
 import io from 'socket.io-client';
 import { Provider } from 'react-redux';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import translationRU from './locales/ru.json';
 import App from './components/App.jsx';
 import store from './store.js';
@@ -56,13 +57,24 @@ export default async () => {
   const socket = new io();
   const api = initApi(socket, store);
 
+  const rollbarConfig = {
+    accessToken: '7363e2783f55410eae00e47508c66796',
+    environment: 'production',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  };
+
   return (
     <I18nextProvider i18n={i18nInstance}>
-      <ApiContext.Provider value={api}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </ApiContext.Provider>
+      <RollbarProvider config={rollbarConfig}>
+        <ErrorBoundary>
+          <ApiContext.Provider value={api}>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </ApiContext.Provider>
+        </ErrorBoundary>
+      </RollbarProvider>
     </I18nextProvider>
   );
 };
