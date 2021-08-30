@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import {
   Button,
@@ -33,6 +34,7 @@ export default () => {
   }, []);
 
   const [authFailed, setAuthFailed] = useState(false);
+  const [t] = useTranslation();
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
@@ -69,6 +71,7 @@ export default () => {
       <Row className="justify-content-center pt-5">
         <Col className="col-sm-4">
           <Form onSubmit={formik.handleSubmit} className="p-3">
+            {t('headers.login')}
             <Form.Group className="mb-2">
               <Form.Label htmlFor="username">Username</Form.Label>
               <Form.Control
