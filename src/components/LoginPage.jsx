@@ -125,9 +125,9 @@ export default () => {
             </Form>
           </Card.Body>
           <Card.Footer className="text-center">
-            <span>{t('login.footer')}</span>
+            {t('login.footer')}
             {' '}
-            <a as={Link} to="/signup">{t('login.link')}</a>
+            <Col as={Link} to="/signup">{t('login.link')}</Col>
           </Card.Footer>
         </Card>
       </Col>
