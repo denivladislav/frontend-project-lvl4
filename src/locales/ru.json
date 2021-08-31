@@ -1,5 +1,30 @@
 {
-  "headers": {
-    "login": "Логин"
+  "nav": {
+    "chat": "Hexlet Chat",
+    "logout": "Выйти"
+  },
+  "login": {
+    "header": "Войти",
+    "username": "Ваш ник",
+    "password": "Пароль",
+    "submit": "Войти",
+    "footer": "Нет аккаунта?",
+    "link": "Регистрация"
+  },
+  "signUp": {
+    "header": "Регистрация",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "passwordConfirmation": "Подтвердите пароль",
+    "submit": "Зарегистрироваться"
+  },
+  "notFound": {
+    "header": "404. Страница не найдена",
+    "link": "Перейти на главную"
+  },
+  "errors": {
+    "requiredError": "Обязательное поле",
+    "authError": "Неверные имя пользователя или пароль",
+    "duplicatedUserError": "Такой пользователь уже существует"
   }
 }

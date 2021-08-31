@@ -6,7 +6,8 @@ import {
   Form,
   Row,
   Col,
-  Container,
+  Card,
+  FloatingLabel,
 } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -16,17 +17,6 @@ import routes from '../routes.js';
 
 export default () => {
   const auth = useAuth();
-
-  if (auth.loggedIn) {
-    return (
-      <h4>
-        You are already logged in. Go to
-        {' '}
-        <a href="/">chat page</a>
-      </h4>
-    );
-  }
-
   const history = useHistory();
   const inputRef = useRef();
   useEffect(() => {
@@ -38,8 +28,9 @@ export default () => {
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
-      .min(2, 'Too Short!')
-      .required('Required'),
+      .required(),
+    password: Yup.string()
+      .required(),
   });
 
   const formik = useFormik({
@@ -67,47 +58,82 @@ export default () => {
   });
 
   return (
-    <Container>
-      <Row className="justify-content-center pt-5">
-        <Col className="col-sm-4">
-          <Form onSubmit={formik.handleSubmit} className="p-3">
-            {t('headers.login')}
-            <Form.Group className="mb-2">
-              <Form.Label htmlFor="username">Username</Form.Label>
-              <Form.Control
-                onChange={formik.handleChange}
-                value={formik.values.username}
-                placeholder="username"
-                name="username"
-                id="username"
-                autoComplete="username"
-                required
-                ref={inputRef}
-                isInvalid={authFailed}
-              />
-            </Form.Group>
-            {formik.errors.username && formik.touched.username ? (
-              <div>{formik.errors.username}</div>
-            ) : null}
-            <Form.Group className="mb-2">
-              <Form.Label htmlFor="password">Password</Form.Label>
-              <Form.Control
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                placeholder="password"
-                name="password"
-                id="password"
-                autoComplete="current-password"
-                required
-                isInvalid={authFailed}
-              />
-              <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
-            </Form.Group>
-            <Button disabled={formik.isSubmitting} type="submit" variant="outline-primary">Submit</Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    <Row className="justify-content-center align-content-center h-100">
+      <Col className="col-md-2 col-lg-6">
+        <Card className="shadow-sm mx-5">
+          <Card.Header className="text-center h3">
+            {t('login.header')}
+          </Card.Header>
+          <Card.Body>
+            <Form onSubmit={formik.handleSubmit} className="p-2">
+              <Form.Group className="p-2 mx-2">
+                <FloatingLabel label={t('login.username')}>
+                  <Form.Control
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    placeholder={t('login.username')}
+                    name="username"
+                    id="username"
+                    autoComplete="username"
+                    ref={inputRef}
+                    isInvalid={authFailed || (formik.touched.username && formik.errors.username)}
+                  />
+                  {formik.touched.username && formik.errors.username
+                    ? (
+                      <Form.Control.Feedback type="invalid" tooltip>
+                        {t('errors.requiredError')}
+                      </Form.Control.Feedback>
+                    )
+                    : null}
+                </FloatingLabel>
+              </Form.Group>
+              <Form.Group className="p-2 mx-2">
+                <FloatingLabel label={t('login.password')}>
+                  <Form.Control
+                    type="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    placeholder={t('login.password')}
+                    name="password"
+                    id="password"
+                    autoComplete="current-password"
+                    isInvalid={authFailed || (formik.touched.password && formik.errors.password)}
+                  />
+                  {formik.touched.password && formik.errors.password
+                    ? (
+                      <Form.Control.Feedback type="invalid" tooltip>
+                        {t('errors.requiredError')}
+                      </Form.Control.Feedback>
+                    )
+                    : null}
+                  {authFailed
+                    ? (
+                      <Form.Control.Feedback type="invalid">
+                        {t('errors.authError')}
+                      </Form.Control.Feedback>
+                    )
+                    : null}
+                </FloatingLabel>
+              </Form.Group>
+              <Col className="text-center">
+                <Button
+                  className="mx-3 my-1"
+                  disabled={formik.isSubmitting}
+                  type="submit"
+                  variant="primary"
+                >
+                  {t('login.submit')}
+                </Button>
+              </Col>
+            </Form>
+          </Card.Body>
+          <Card.Footer className="text-center">
+            {t('login.footer')}
+            {' '}
+            <a href="/signup">{t('login.link')}</a>
+          </Card.Footer>
+        </Card>
+      </Col>
+    </Row>
   );
 };

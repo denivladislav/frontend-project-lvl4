@@ -13,6 +13,7 @@ import {
   Nav,
   Container, Col,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import LoginPage from './LoginPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import ChatPage from './ChatPage.jsx';
@@ -53,11 +54,11 @@ const AuthProvider = ({ children }) => {
 
 const AuthButton = () => {
   const auth = useContext(authContext);
-
+  const [t] = useTranslation();
   return (
     auth.loggedIn
-      ? <Button onClick={auth.logOut} className="btn-secondary">Log out</Button>
-      : <Button as={Link} to="/login" className="btn-secondary">Log in</Button>
+      ? <Button onClick={auth.logOut} className="btn-primary">{t('nav.logout')}</Button>
+      : null
   );
 };
 
@@ -74,38 +75,41 @@ const ChatRoute = ({ children, path }) => {
   );
 };
 
-export default () => (
-  <AuthProvider>
-    <Router>
-      <Col className="d-flex flex-column h-100">
-        <Navbar bg="light" expand="lg">
-          <Container>
-            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/login">LoginPage</Nav.Link>
-              <Nav.Link as={Link} to="/signup">SignUpPage</Nav.Link>
-              <Nav.Link as={Link} to="/404">NotFoundPage</Nav.Link>
-            </Nav>
-            <AuthButton />
+export default () => {
+  const [t] = useTranslation();
+  return (
+    <AuthProvider>
+      <Router>
+        <Col className="d-flex flex-column h-100">
+          <Navbar bg="light" expand="lg">
+            <Container>
+              <Navbar.Brand as={Link} to="/">{t('nav.chat')}</Navbar.Brand>
+              <Nav className="me-auto">
+                <Nav.Link as={Link} to="/login">LoginPage</Nav.Link>
+                <Nav.Link as={Link} to="/signup">SignUpPage</Nav.Link>
+                <Nav.Link as={Link} to="/404">NotFoundPage</Nav.Link>
+              </Nav>
+              <AuthButton />
+            </Container>
+          </Navbar>
+          <Container className="h-100 overflow-hidden rounded shadow my-4">
+            <Switch>
+              <ChatRoute exact path="/">
+                <ChatPage />
+              </ChatRoute>
+              <Route path="/login">
+                <LoginPage />
+              </Route>
+              <Route path="/signup">
+                <SignUpPage />
+              </Route>
+              <Route path="*">
+                <NotFoundPage />
+              </Route>
+            </Switch>
           </Container>
-        </Navbar>
-        <Container className="h-100 overflow-hidden rounded shadow my-4">
-          <Switch>
-            <ChatRoute exact path="/">
-              <ChatPage />
-            </ChatRoute>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/signup">
-              <SignUpPage />
-            </Route>
-            <Route path="*">
-              <NotFoundPage />
-            </Route>
-          </Switch>
-        </Container>
-      </Col>
-    </Router>
-  </AuthProvider>
-);
+        </Col>
+      </Router>
+    </AuthProvider>
+  );
+};

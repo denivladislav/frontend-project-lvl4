@@ -115,7 +115,7 @@ export default () => {
             <Button
               onClick={() => dispatch(openModal({ modalType: 'addChannel' }))}
               size="sm"
-              className="px-1 py-0 btn-secondary"
+              className="px-1 py-0 btn-primary"
             >
               ＋
             </Button>
