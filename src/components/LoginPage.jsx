@@ -67,53 +67,51 @@ export default () => {
           <Card.Body>
             <Form onSubmit={formik.handleSubmit} className="p-2">
               <Form.Group className="p-2 mx-2">
-                <FloatingLabel label={t('login.username')}>
-                  <Form.Control
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                    placeholder={t('login.username')}
-                    name="username"
-                    id="username"
-                    autoComplete="username"
-                    ref={inputRef}
-                    isInvalid={authFailed || (formik.touched.username && formik.errors.username)}
-                  />
-                  {formik.touched.username && formik.errors.username
-                    ? (
-                      <Form.Control.Feedback type="invalid" tooltip>
-                        {t('errors.requiredError')}
-                      </Form.Control.Feedback>
-                    )
-                    : null}
-                </FloatingLabel>
+                <Form.Label htmlFor="username">{t('login.username')}</Form.Label>
+                <Form.Control
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                  placeholder={t('login.username')}
+                  name="username"
+                  id="username"
+                  autoComplete="username"
+                  ref={inputRef}
+                  isInvalid={authFailed || (formik.touched.username && formik.errors.username)}
+                />
+                {formik.touched.username && formik.errors.username
+                  ? (
+                    <Form.Control.Feedback type="invalid" tooltip>
+                      {t('errors.requiredError')}
+                    </Form.Control.Feedback>
+                  )
+                  : null}
               </Form.Group>
               <Form.Group className="p-2 mx-2">
-                <FloatingLabel label={t('login.password')}>
-                  <Form.Control
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    placeholder={t('login.password')}
-                    name="password"
-                    id="password"
-                    autoComplete="current-password"
-                    isInvalid={authFailed || (formik.touched.password && formik.errors.password)}
-                  />
-                  {formik.touched.password && formik.errors.password
-                    ? (
-                      <Form.Control.Feedback type="invalid" tooltip>
-                        {t('errors.requiredError')}
-                      </Form.Control.Feedback>
-                    )
-                    : null}
-                  {authFailed
-                    ? (
-                      <Form.Control.Feedback type="invalid">
-                        {t('errors.authError')}
-                      </Form.Control.Feedback>
-                    )
-                    : null}
-                </FloatingLabel>
+                <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
+                <Form.Control
+                  type="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  placeholder={t('login.password')}
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
+                  isInvalid={authFailed || (formik.touched.password && formik.errors.password)}
+                />
+                {formik.touched.password && formik.errors.password
+                  ? (
+                    <Form.Control.Feedback type="invalid" tooltip>
+                      {t('errors.requiredError')}
+                    </Form.Control.Feedback>
+                  )
+                  : null}
+                {authFailed
+                  ? (
+                    <Form.Control.Feedback type="invalid">
+                      {t('errors.authError')}
+                    </Form.Control.Feedback>
+                  )
+                  : null}
               </Form.Group>
               <Col className="text-center">
                 <Button
