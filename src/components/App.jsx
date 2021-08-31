@@ -10,8 +10,8 @@ import {
 import {
   Button,
   Navbar,
-  Nav,
-  Container, Col,
+  Container,
+  Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import LoginPage from './LoginPage.jsx';
@@ -84,11 +84,11 @@ export default () => {
           <Navbar bg="light" expand="lg">
             <Container>
               <Navbar.Brand as={Link} to="/">{t('nav.chat')}</Navbar.Brand>
-              <Nav className="me-auto">
+              {/* <Nav className="me-auto">
                 <Nav.Link as={Link} to="/login">LoginPage</Nav.Link>
                 <Nav.Link as={Link} to="/signup">SignUpPage</Nav.Link>
                 <Nav.Link as={Link} to="/404">NotFoundPage</Nav.Link>
-              </Nav>
+              </Nav> */}
               <AuthButton />
             </Container>
           </Navbar>
