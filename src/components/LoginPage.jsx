@@ -7,7 +7,6 @@ import {
   Row,
   Col,
   Card,
-  FloatingLabel,
 } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
