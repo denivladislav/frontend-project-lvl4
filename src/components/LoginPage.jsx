@@ -8,7 +8,7 @@ import {
   Col,
   Card,
 } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth.jsx';
@@ -125,9 +125,7 @@ export default () => {
             </Form>
           </Card.Body>
           <Card.Footer className="text-center">
-            <p>
-              <a href="/signup">{t('login.link')}</a>
-            </p>
+            <Col as={Link} to="/login">{t('login.link')}</Col>
           </Card.Footer>
         </Card>
       </Col>
