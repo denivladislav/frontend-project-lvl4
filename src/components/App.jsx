@@ -75,6 +75,19 @@ const ChatRoute = ({ children, path }) => {
   );
 };
 
+const SignUpRoute = ({ children, path }) => {
+  const auth = useAuth();
+
+  return (
+    <Route
+      path={path}
+      render={({ location }) => (!auth.loggedIn
+        ? children
+        : <Redirect to={{ pathname: '/', state: { from: location } }} />)}
+    />
+  );
+};
+
 export default () => {
   const [t] = useTranslation();
   return (
@@ -100,9 +113,9 @@ export default () => {
               <Route path="/login">
                 <LoginPage />
               </Route>
-              <Route path="/signup">
+              <SignUpRoute path="/signup">
                 <SignUpPage />
-              </Route>
+              </SignUpRoute>
               <Route path="*">
                 <NotFoundPage />
               </Route>

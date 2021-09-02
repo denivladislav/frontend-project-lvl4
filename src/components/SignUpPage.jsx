@@ -49,11 +49,8 @@ export default () => {
       try {
         const res = await axios.post(routes.signUpPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
-        console.log('Before auth', history);
         auth.logIn();
-        console.log('After auth', history);
-        history.push('/');
-        console.log('After history change', history);
+        // history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           setSignUpFailed(true);
