@@ -46,20 +46,21 @@ export default () => {
     validationSchema: SignUpSchema,
     onSubmit: async (values) => {
       console.log('You clicked the button!');
-      setSignUpFailed(false);
-      try {
-        const res = await axios.post(routes.signUpPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-        history.replace('/');
-      } catch (err) {
-        if (err.isAxiosError && err.response.status === 409) {
-          setSignUpFailed(true);
-          inputRef.current.select();
-          return;
-        }
-        throw err;
-      }
+      // setSignUpFailed(false);
+      history.replace('/404');
+      // try {
+      //   const res = await axios.post(routes.signUpPath(), values);
+      //   localStorage.setItem('userId', JSON.stringify(res.data));
+      //   auth.logIn();
+      //   // history.replace('/');
+      // } catch (err) {
+      //   if (err.isAxiosError && err.response.status === 409) {
+      //     setSignUpFailed(true);
+      //     inputRef.current.select();
+      //     return;
+      //   }
+      //   throw err;
+      // }
     },
   });
 
