@@ -15,6 +15,7 @@ import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
 export default () => {
+  console.log('SIGN UP PAGE');
   const auth = useAuth();
   const history = useHistory();
   const inputRef = useRef();
