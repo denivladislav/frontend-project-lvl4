@@ -43,7 +43,7 @@ export default () => {
       password: '',
       passwordConfirmation: '',
     },
-    // validationSchema: SignUpSchema,
+    validationSchema: SignUpSchema,
     onSubmit: async (values) => {
       console.log('You clicked the button!');
       setSignUpFailed(false);
