@@ -13,6 +13,7 @@ import {
   Container,
   Col,
 } from 'react-bootstrap';
+
 import { useTranslation } from 'react-i18next';
 import LoginPage from './LoginPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
@@ -75,19 +76,6 @@ const ChatRoute = ({ children, path }) => {
   );
 };
 
-const SignUpRoute = ({ children, path }) => {
-  const auth = useAuth();
-
-  return (
-    <Route
-      path={path}
-      render={({ location }) => (!auth.loggedIn
-        ? children
-        : <Redirect to={{ pathname: '/', state: { from: location } }} />)}
-    />
-  );
-};
-
 export default () => {
   const [t] = useTranslation();
   return (
@@ -113,9 +101,9 @@ export default () => {
               <Route path="/login">
                 <LoginPage />
               </Route>
-              <SignUpRoute path="/signup">
+              <Route path="/signup">
                 <SignUpPage />
-              </SignUpRoute>
+              </Route>
               <Route path="*">
                 <NotFoundPage />
               </Route>

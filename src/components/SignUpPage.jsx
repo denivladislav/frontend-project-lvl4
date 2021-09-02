@@ -50,7 +50,7 @@ export default () => {
         const res = await axios.post(routes.signUpPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
-        // history.replace('/');
+        history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           setSignUpFailed(true);
@@ -60,6 +60,10 @@ export default () => {
         throw err;
       }
     },
+  });
+
+  history.listen((location) => {
+    console.log('!!!', location);
   });
 
   return (
