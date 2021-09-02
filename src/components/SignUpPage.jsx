@@ -140,13 +140,15 @@ export default () => {
                     : null}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Button
-                className="mx-3 my-1"
-                type="submit"
-                variant="primary"
-              >
-                {t('signUp.submit')}
-              </Button>
+              <Col className="text-center">
+                <Button
+                  className="mx-3 my-1"
+                  type="submit"
+                  variant="primary"
+                >
+                  {t('signUp.submit')}
+                </Button>
+              </Col>
             </Form>
           </Card.Body>
         </Card>
