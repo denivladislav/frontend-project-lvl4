@@ -39,6 +39,7 @@ export default () => {
     },
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
+      console.log('LOGIN PAGE BUTTON');
       setAuthFailed(false);
       try {
         const res = await axios.post(routes.loginPath(), values);

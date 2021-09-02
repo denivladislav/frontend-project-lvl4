@@ -15,7 +15,6 @@ import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
 export default () => {
-  console.log('SIGN UP PAGE');
   const auth = useAuth();
   const history = useHistory();
   const inputRef = useRef();
@@ -76,7 +75,7 @@ export default () => {
             {t('signUp.header')}
           </Card.Header>
           <Card.Body>
-            <Form className="p-2">
+            <Form onSubmit={formik.handleSubmit} className="p-2">
               <Form.Group className="p-2 mx-2">
                 <Form.Label htmlFor="username">{t('signUp.username')}</Form.Label>
                 <Form.Control
@@ -139,7 +138,6 @@ export default () => {
               </Form.Group>
               <Col className="text-center">
                 <Button
-                  onClick={formik.handleSubmit}
                   className="mx-3 my-1"
                   disabled={formik.isSubmitting}
                   type="submit"
