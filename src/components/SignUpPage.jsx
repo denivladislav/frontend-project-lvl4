@@ -32,9 +32,6 @@ export default () => {
     password: Yup.string()
       .min(6, 'invalidPasswordLength')
       .required('required'),
-    passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref('password')], 'unconfirmedPassword')
-      .required('required'),
   });
 
   const formik = useFormik({
