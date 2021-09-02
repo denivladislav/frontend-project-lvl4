@@ -91,7 +91,7 @@ export default () => {
         channelId: currentChannelId,
       };
       api.sendMessage(newMessage);
-      resetForm({ values: '' });
+      resetForm();
     },
   });
 

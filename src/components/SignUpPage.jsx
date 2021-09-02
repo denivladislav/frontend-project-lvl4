@@ -41,7 +41,7 @@ export default () => {
       passwordConfirmation: '',
     },
     validationSchema: SignUpSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log('You clicked the button!');
       setSignUpFailed(false);
       try {
@@ -49,6 +49,7 @@ export default () => {
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
         history.replace('/');
+        resetForm();
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           setSignUpFailed(true);
@@ -60,9 +61,9 @@ export default () => {
     },
   });
 
-  history.listen((location) => {
-    console.log('!!!', location);
-  });
+  // history.listen((location) => {
+  //   console.log('!!!', location);
+  // });
 
   return (
     <Row className="justify-content-center align-content-center h-100">
