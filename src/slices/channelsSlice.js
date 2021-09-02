@@ -11,7 +11,6 @@ export const channelsSlice = createSlice({
   initialState,
   reducers: {
     setChannelsData: (state, { payload }) => {
-      console.log(payload);
       state.channels = payload.channels;
       state.currentChannelId = payload.currentChannelId;
       state.username = payload.username;
