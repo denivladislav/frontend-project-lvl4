@@ -184,7 +184,7 @@ export default () => {
                     ref={inputRef}
                     required
                   />
-                  <Button type="submit" name={t('chat.submit')} variant="outline-secondary">➔</Button>
+                  <Button role="button" type="submit" name={t('chat.submit')} variant="outline-secondary">➔</Button>
                 </InputGroup>
               </Form>
             </div>
