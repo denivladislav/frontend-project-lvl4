@@ -136,16 +136,13 @@ export default () => {
                     : null}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Col className="text-center">
-                <Button
-                  className="mx-3 my-1"
-                  disabled={formik.isSubmitting}
-                  type="submit"
-                  variant="primary"
-                >
-                  {t('signUp.submit')}
-                </Button>
-              </Col>
+              <Button
+                className="mx-3 my-1"
+                type="submit"
+                variant="primary"
+              >
+                {t('signUp.submit')}
+              </Button>
             </Form>
           </Card.Body>
         </Card>
