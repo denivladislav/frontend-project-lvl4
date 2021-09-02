@@ -8,8 +8,10 @@
     "username": "Ваш ник",
     "password": "Пароль",
     "submit": "Войти",
-    "footer": "Нет аккаунта?",
-    "link": "Регистрация"
+    "footer": {
+      "message": "Нет аккаунта?",
+      "link": "Регистрация"
+    }
   },
   "signUp": {
     "header": "Регистрация",
@@ -18,13 +20,36 @@
     "passwordConfirmation": "Подтвердите пароль",
     "submit": "Зарегистрироваться"
   },
+  "chat": {
+    "input": "Введите сообщение",
+    "сhannels": "Каналы",
+    "messageCounter": {
+      "count_0": "{{count}} сообщение",
+      "count_1": "{{count}} сообщения",
+      "count_2": "{{count}} сообщений"
+    },
+    "renameChannel": "Переименовать",
+    "removeChannel": "Удалить"
+  },
+  "modal": {
+    "addHeader": "Добавить канал",
+    "renameHeader": "Переименовать канал",
+    "removeHeader": "Удалить канал",
+    "removeBody": "Уверены?",
+    "cancel": "Отменить",
+    "submit": "Отправить"
+  },
   "notFound": {
     "header": "404. Страница не найдена",
     "link": "Перейти на главную"
   },
   "errors": {
-    "requiredError": "Обязательное поле",
-    "authError": "Неверные имя пользователя или пароль",
-    "duplicatedUserError": "Такой пользователь уже существует"
+    "required": "Обязательное поле",
+    "auth": "Неверные имя пользователя или пароль",
+    "invalidUsernameLength": "От 3 до 20 символов",
+    "invalidPasswordLength": "Не менее 6 символов",
+    "unconfirmedPassword": "Пароли должны совпадать",
+    "duplicatedUsername": "Такой пользователь уже существует",
+    "duplicatedChannel": "Такой канал уже существует"
   }
 }

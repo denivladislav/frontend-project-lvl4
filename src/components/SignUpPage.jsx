@@ -7,7 +7,6 @@ import {
   Row,
   Col,
   Card,
-  FloatingLabel,
 } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -23,18 +22,19 @@ export default () => {
     inputRef.current.focus();
   }, []);
   const [t] = useTranslation();
-  const [authFailed, setAuthFailed] = useState(false);
+  const [signUpFailed, setSignUpFailed] = useState(false);
 
   const SignUpSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, 'Too Short!')
-      .max(20, 'Too long')
-      .required('Required'),
+      .min(3, 'invalidUsernameLength')
+      .max(20, 'invalidUsernameLength')
+      .required('required'),
     password: Yup.string()
-      .min(6, 'Too Short!')
-      .required('Required'),
+      .min(6, 'invalidPasswordLength')
+      .required('required'),
     passwordConfirmation: Yup.mixed()
-      .oneOf([Yup.ref('password')]),
+      .oneOf([Yup.ref('password')], 'unconfirmedPassword')
+      .required('required'),
   });
 
   const formik = useFormik({
@@ -45,7 +45,7 @@ export default () => {
     },
     validationSchema: SignUpSchema,
     onSubmit: async (values) => {
-      setAuthFailed(false);
+      setSignUpFailed(false);
       try {
         const res = await axios.post(routes.signUpPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
@@ -53,7 +53,7 @@ export default () => {
         history.replace('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
-          setAuthFailed(true);
+          setSignUpFailed(true);
           inputRef.current.select();
           return;
         }
@@ -72,62 +72,75 @@ export default () => {
           <Card.Body>
             <Form onSubmit={formik.handleSubmit} className="p-2">
               <Form.Group className="p-2 mx-2">
-                <FloatingLabel label={t('signUp.username')}>
-                  <Form.Control
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                    placeholder={t('signUp.username')}
-                    name="username"
-                    id="username"
-                    autoComplete="username"
-                    required
-                    ref={inputRef}
-                    isInvalid={authFailed}
-                  />
-                </FloatingLabel>
-              </Form.Group>
-              {formik.errors.username && formik.touched.username
-                ? (<div>{formik.errors.username}</div>)
-                : null}
-              <Form.Group className="p-2 mx-2">
-                <FloatingLabel label={t('signUp.password')}>
-                  <Form.Control
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    placeholder={t('signUp.password')}
-                    name="password"
-                    id="password"
-                    autoComplete="current-password"
-                    required
-                    isInvalid={authFailed}
-                  />
-                  {formik.errors.password && formik.touched.password
-                    ? (<div>{formik.errors.password}</div>)
+                <Form.Label htmlFor="username">{t('signUp.username')}</Form.Label>
+                <Form.Control
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                  placeholder={t('signUp.username')}
+                  name="username"
+                  id="username"
+                  autoComplete="username"
+                  ref={inputRef}
+                  isInvalid={signUpFailed || (formik.touched.username && formik.errors.username)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formik.touched.username && formik.errors.username
+                    ? t(`errors.${formik.errors.username}`)
                     : null}
-                </FloatingLabel>
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="p-2 mx-2">
-                <FloatingLabel label={t('signUp.passwordConfirmation')}>
-                  <Form.Control
-                    onChange={formik.handleChange}
-                    value={formik.values.passwordConfirmation}
-                    placeholder={t('signUp.passwordConfirmation')}
-                    name="passwordConfirmation"
-                    id="passwordConfirmation"
-                    autoComplete="passwordConfirmation"
-                    required
-                    isInvalid={authFailed}
-                  />
-                  <Form.Control.Feedback type="invalid">{t('errors.duplicatedUserError')}</Form.Control.Feedback>
-                </FloatingLabel>
+                <Form.Label htmlFor="password">{t('signUp.password')}</Form.Label>
+                <Form.Control
+                  type="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  placeholder={t('signUp.password')}
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
+                  isInvalid={signUpFailed || (formik.touched.password && formik.errors.password)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formik.touched.password && formik.errors.password
+                    ? t(`errors.${formik.errors.password}`)
+                    : null}
+                </Form.Control.Feedback>
               </Form.Group>
-              {formik.errors.passwordConfirmation && formik.touched.passwordConfirmation
-                ? (<div>{formik.errors.passwordConfirmation}</div>)
-                : null}
-              <Button disabled={formik.isSubmitting} type="submit" variant="outline-primary">
-                {t('signUp.submit')}
-              </Button>
+              <Form.Group className="p-2 mx-2">
+                <Form.Label htmlFor="password">{t('signUp.passwordConfirmation')}</Form.Label>
+                <Form.Control
+                  type="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.passwordConfirmation}
+                  placeholder={t('signUp.passwordConfirmation')}
+                  name="passwordConfirmation"
+                  id="passwordConfirmation"
+                  autoComplete="passwordConfirmation"
+                  isInvalid={signUpFailed
+                    || (formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation
+                    ? t(`errors.${formik.errors.passwordConfirmation}`)
+                    : null}
+                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  {signUpFailed
+                    ? t('errors.duplicatedUsername')
+                    : null}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Col className="text-center">
+                <Button
+                  className="mx-3 my-1"
+                  disabled={formik.isSubmitting}
+                  type="submit"
+                  variant="primary"
+                >
+                  {t('signUp.submit')}
+                </Button>
+              </Col>
             </Form>
           </Card.Body>
         </Card>

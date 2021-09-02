@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,14 +16,15 @@ export default ({ channelsNames, username }) => {
   const dispatch = useDispatch();
   const api = useApi();
   const inputRef = useRef();
+  const [t] = useTranslation();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   const AddChannelSchema = Yup.object().shape({
     name: Yup.mixed()
-      .notOneOf(channelsNames, 'This name already exists')
-      .required('Channel name cannot be empty'),
+      .notOneOf(channelsNames, 'duplicatedChannel')
+      .required('required'),
   });
 
   const formik = useFormik({
@@ -43,32 +45,34 @@ export default ({ channelsNames, username }) => {
   return (
     <Modal centered show onHide={() => dispatch(closeModal())}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Channel</Modal.Title>
+        <Modal.Title>
+          {t('modal.addHeader')}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <InputGroup>
             <Form.Control
+              data-testid="add-channel"
               onChange={formik.handleChange}
               value={formik.values.name}
               name="name"
               id="name"
-              required
               ref={inputRef}
+              isInvalid={formik.touched.name && formik.errors.name}
             />
-            <Form.Control.Feedback type="invalid">name already exists</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {t(`errors.${formik.errors.name}`)}
+            </Form.Control.Feedback>
           </InputGroup>
-          {formik.errors.name && formik.touched.name
-            ? (<div>{formik.errors.name}</div>)
-            : null}
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => dispatch(closeModal())}>
-          Close
+          {t('modal.cancel')}
         </Button>
         <Button disabled={formik.isSubmitting} variant="primary" onClick={formik.handleSubmit}>
-          Submit
+          {t('modal.submit')}
         </Button>
       </Modal.Footer>
     </Modal>

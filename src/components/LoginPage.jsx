@@ -27,9 +27,9 @@ export default () => {
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
-      .required(),
+      .required('required'),
     password: Yup.string()
-      .required(),
+      .required('required'),
   });
 
   const formik = useFormik({
@@ -77,13 +77,11 @@ export default () => {
                   ref={inputRef}
                   isInvalid={authFailed || (formik.touched.username && formik.errors.username)}
                 />
-                {formik.touched.username && formik.errors.username
-                  ? (
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {t('errors.requiredError')}
-                    </Form.Control.Feedback>
-                  )
-                  : null}
+                <Form.Control.Feedback type="invalid">
+                  {formik.touched.username && formik.errors.username
+                    ? t(`errors.${formik.errors.username}`)
+                    : null}
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="p-2 mx-2">
                 <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
@@ -97,20 +95,16 @@ export default () => {
                   autoComplete="current-password"
                   isInvalid={authFailed || (formik.touched.password && formik.errors.password)}
                 />
-                {formik.touched.password && formik.errors.password
-                  ? (
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {t('errors.requiredError')}
-                    </Form.Control.Feedback>
-                  )
-                  : null}
-                {authFailed
-                  ? (
-                    <Form.Control.Feedback type="invalid">
-                      {t('errors.authError')}
-                    </Form.Control.Feedback>
-                  )
-                  : null}
+                <Form.Control.Feedback type="invalid">
+                  {formik.touched.password && formik.errors.password
+                    ? t(`errors.${formik.errors.password}`)
+                    : null}
+                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  {authFailed
+                    ? t('errors.auth')
+                    : null}
+                </Form.Control.Feedback>
               </Form.Group>
               <Col className="text-center">
                 <Button
@@ -125,9 +119,9 @@ export default () => {
             </Form>
           </Card.Body>
           <Card.Footer className="text-center">
-            {t('login.footer')}
+            {t('login.footer.message')}
             {' '}
-            <Col as={Link} to="/signup">{t('login.link')}</Col>
+            <Col as={Link} to="/signup">{t('login.footer.link')}</Col>
           </Card.Footer>
         </Card>
       </Col>

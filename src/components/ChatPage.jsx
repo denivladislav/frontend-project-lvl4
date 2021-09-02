@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import {
   Row,
@@ -22,7 +23,7 @@ import useApi from '../hooks/useApi.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from './modals/index.js';
 
-const Modal = ({
+const renderModal = ({
   modalType, channel, channelsNames, username,
 }) => {
   const ModalComponent = getModal(modalType);
@@ -44,6 +45,7 @@ export default () => {
   const inputRef = useRef();
   const lastMessageRef = useRef();
   const auth = useAuth();
+  const [t] = useTranslation();
 
   const { username } = JSON.parse(localStorage.getItem('userId'));
   const channels = useSelector((state) => state.channelsData.channels);
@@ -54,9 +56,9 @@ export default () => {
     .filter((message) => message.channelId === currentChannelId);
   const modalType = useSelector((state) => state.modalInfo.modalType);
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
-  const myState = useSelector((state) => state);
-  console.log('myState', myState);
-  console.log('username', username);
+  // const myState = useSelector((state) => state);
+  // console.log('myState', myState);
+  // console.log('username', username);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -93,25 +95,30 @@ export default () => {
     },
   });
 
-  const getDropdownComponent = ({
-    variant, dropdownClass, channel,
-  }) => (
-    <DropdownButton title="" variant={variant} className={dropdownClass} as={ButtonGroup}>
-      <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'renameChannel', managedChannel: channel }))} eventKey="1">
-        Rename Channel
-      </Dropdown.Item>
-      <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'removeChannel', managedChannel: channel }))} eventKey="2">
-        Remove Channel
-      </Dropdown.Item>
-    </DropdownButton>
-  );
+  const renderDropdownComponent = ({ variant, dropdownClass, channel }) => {
+    if (!channel.removable) {
+      return null;
+    }
+    return (
+      <DropdownButton title="" variant={variant} className={dropdownClass} as={ButtonGroup}>
+        <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'renameChannel', managedChannel: channel }))} eventKey="1">
+          {t('chat.renameChannel')}
+        </Dropdown.Item>
+        <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'removeChannel', managedChannel: channel }))} eventKey="2">
+          {t('chat.removeChannel')}
+        </Dropdown.Item>
+      </DropdownButton>
+    );
+  };
 
   return (
     <>
       <Row className="h-100">
         <Col className="col-4 col-md-2 border-end bg-light pt-5 px-0">
           <Col className="d-flex justify-content-between mb-2 ps-2 pe-2">
-            <Col className="ps-2">Channels</Col>
+            <Col className="ps-2">
+              {t('chat.сhannels')}
+            </Col>
             <Button
               onClick={() => dispatch(openModal({ modalType: 'addChannel' }))}
               size="sm"
@@ -135,9 +142,7 @@ export default () => {
                     >
                       {channel.name}
                     </Button>
-                    {channel.removable
-                      ? getDropdownComponent({ variant, dropdownClass, channel })
-                      : null }
+                    {renderDropdownComponent({ variant, dropdownClass, channel })}
                   </ButtonGroup>
                 </Nav.Item>
               );
@@ -147,13 +152,12 @@ export default () => {
         <Col className="p-0 h-100">
           <Col className="flex-column d-flex h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
-              <p>
-                <b>{currentChannel ? currentChannel.name : null}</b>
-              </p>
+              <b>
+                {currentChannel ? currentChannel.name : null}
+              </b>
+              <br />
               <span>
-                Number of messages:
-                {' '}
-                {currentChannelMessages.length}
+                {t('chat.messageCounter.count', { count: currentChannelMessages.length })}
               </span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
@@ -164,7 +168,6 @@ export default () => {
                   {' '}
                   {msg.message}
                 </p>
-
               ))}
               <div ref={lastMessageRef} />
             </div>
@@ -172,13 +175,14 @@ export default () => {
               <Form onSubmit={formik.handleSubmit}>
                 <InputGroup>
                   <Form.Control
+                    data-testid="new-message"
                     onChange={formik.handleChange}
                     value={formik.values.message}
-                    placeholder="Enter your message here"
+                    placeholder={t('chat.input')}
                     name="message"
                     id="message"
                     ref={inputRef}
-                    autoFocus
+                    required
                   />
                   <Button type="submit" variant="outline-secondary">➔</Button>
                 </InputGroup>
@@ -188,12 +192,9 @@ export default () => {
         </Col>
       </Row>
 
-      <Modal
-        modalType={modalType}
-        username={username}
-        channel={managedChannel}
-        channelsNames={channelsNames}
-      />
+      {renderModal({
+        modalType, username, channel: managedChannel, channelsNames,
+      })}
     </>
   );
 };
