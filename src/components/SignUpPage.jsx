@@ -45,6 +45,7 @@ export default () => {
     },
     validationSchema: SignUpSchema,
     onSubmit: async (values) => {
+      console.log('You clicked the button!');
       setSignUpFailed(false);
       try {
         const res = await axios.post(routes.signUpPath(), values);
