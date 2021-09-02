@@ -25,12 +25,18 @@ export default () => {
   const [signUpFailed, setSignUpFailed] = useState(false);
 
   const SignUpSchema = Yup.object().shape({
-    username: Yup.string()
+    username: Yup
+      .string()
       .min(3, 'invalidUsernameLength')
       .max(20, 'invalidUsernameLength')
       .required('required'),
-    password: Yup.string()
+    password: Yup
+      .string()
       .min(6, 'invalidPasswordLength')
+      .required('required'),
+    passwordConfirmation: Yup
+      .mixed()
+      .oneOf([Yup.ref('password')], 'unconfirmedPassword')
       .required('required'),
   });
 
@@ -111,7 +117,7 @@ export default () => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="p-2 mx-2">
-                <Form.Label htmlFor="password">{t('signUp.passwordConfirmation')}</Form.Label>
+                <Form.Label htmlFor="passwordConfirmation">{t('signUp.passwordConfirmation')}</Form.Label>
                 <Form.Control
                   type="password"
                   onChange={formik.handleChange}
