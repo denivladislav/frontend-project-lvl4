@@ -63,7 +63,7 @@ export default ({ channelsNames, username }) => {
             />
             <Form.Control.Feedback type="invalid">
               {formik.touched.name && formik.errors.name
-                ? t(`errors.${formik.errors.username}`)
+                ? t(`errors.${formik.errors.name}`)
                 : null}
             </Form.Control.Feedback>
           </InputGroup>

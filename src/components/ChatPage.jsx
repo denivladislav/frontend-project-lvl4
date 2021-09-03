@@ -59,9 +59,6 @@ export default () => {
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const myState = useSelector((state) => state);
   console.log('myState', myState);
-  // console.log('username', username);
-  // const messages = useSelector((state) => state.messagesData.messages);
-  // console.log('messages', messages);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -116,6 +113,9 @@ export default () => {
 
   return (
     <>
+      {renderModal({
+        modalType, username, channel: managedChannel, channelsNames,
+      })}
       <Row className="h-100">
         <Col className="col-4 col-md-2 border-end bg-light pt-5 px-0">
           <Col className="d-flex justify-content-between mb-2 ps-2 pe-2">
@@ -197,10 +197,6 @@ export default () => {
           </Col>
         </Col>
       </Row>
-
-      {renderModal({
-        modalType, username, channel: managedChannel, channelsNames,
-      })}
     </>
   );
 };
