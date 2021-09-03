@@ -40,6 +40,7 @@ const renderModal = ({
 };
 
 export default () => {
+  console.log('ENTER!');
   const api = useApi();
   const dispatch = useDispatch();
   const inputRef = useRef();
