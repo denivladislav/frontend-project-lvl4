@@ -14,7 +14,7 @@ import axios from 'axios';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
-export default () => {
+const SignUpPage = () => {
   const auth = useAuth();
   const history = useHistory();
   const inputRef = useRef();
@@ -151,3 +151,5 @@ export default () => {
     </Row>
   );
 };
+
+export default SignUpPage;

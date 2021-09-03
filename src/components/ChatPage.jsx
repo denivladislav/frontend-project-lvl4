@@ -39,7 +39,7 @@ const renderModal = ({
     : null;
 };
 
-export default () => {
+const ChatPage = () => {
   const api = useApi();
   const dispatch = useDispatch();
   const inputRef = useRef();
@@ -206,3 +206,5 @@ export default () => {
     </>
   );
 };
+
+export default ChatPage;

@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-export default () => {
+const NotFoundPage = () => {
   const [t] = useTranslation();
   return (
     <Row className="justify-content-center align-content-top p-2 h-100">
@@ -23,3 +23,5 @@ export default () => {
     </Row>
   );
 };
+
+export default NotFoundPage;
