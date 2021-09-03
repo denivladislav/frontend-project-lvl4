@@ -60,8 +60,8 @@ export default () => {
   const myState = useSelector((state) => state);
   console.log('myState', myState);
   // console.log('username', username);
-  const messages = useSelector((state) => state.messagesData.messages);
-  console.log('messages', messages);
+  // const messages = useSelector((state) => state.messagesData.messages);
+  // console.log('messages', messages);
 
   useEffect(() => {
     const fetchContent = async () => {
