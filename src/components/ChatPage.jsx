@@ -88,6 +88,8 @@ export default () => {
       currentChannelId,
     },
     onSubmit: async (values, { resetForm }) => {
+      console.log('YOU CLICKE THE BUTTON!');
+      console.log(values);
       const newMessage = {
         message: values.message,
         username: values.username,
