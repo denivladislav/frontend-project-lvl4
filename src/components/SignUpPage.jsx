@@ -66,10 +66,6 @@ export default () => {
     },
   });
 
-  // history.listen((location) => {
-  //   console.log('!!!', location);
-  // });
-
   return (
     <Row className="justify-content-center align-content-center h-100">
       <Col className="col-md-2 col-lg-6">

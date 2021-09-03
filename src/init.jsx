@@ -17,17 +17,13 @@ import '../assets/application.scss';
 
 const initApi = (socket, apiStore) => {
   const api = {
-    sendMessage: (newMessage) => {
-      console.log('API SEND MESSAGE');
-      socket.emit('newMessage', newMessage);
-    },
+    sendMessage: (newMessage) => socket.emit('newMessage', newMessage),
     addChannel: (newChannel) => socket.emit('newChannel', newChannel),
     renameChannel: (id, name) => socket.emit('renameChannel', { id, name }),
     removeChannel: (id) => socket.emit('removeChannel', { id }),
   };
 
   socket.on('newMessage', (newMessage) => {
-    console.log('TRIGGERED');
     apiStore.dispatch(addNewMessage(newMessage));
   });
 
@@ -46,7 +42,7 @@ const initApi = (socket, apiStore) => {
   return api;
 };
 
-export default async () => {
+export default async (socket = io()) => {
   const i18nInstance = i18n.createInstance();
   await i18nInstance.init({
     lng: 'ru',
@@ -57,7 +53,6 @@ export default async () => {
       },
     },
   });
-  const socket = io();
   const api = initApi(socket, store);
 
   const rollbarConfig = {

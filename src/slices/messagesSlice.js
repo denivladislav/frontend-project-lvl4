@@ -10,7 +10,6 @@ export const messagesSlice = createSlice({
   initialState,
   reducers: {
     addNewMessage: (state, { payload }) => {
-      console.log('State in slice!', state);
       state.messages.push(payload);
     },
   },

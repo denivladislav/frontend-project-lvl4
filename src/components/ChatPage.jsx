@@ -61,7 +61,7 @@ export default () => {
   console.log('myState', myState);
   // console.log('username', username);
   const messages = useSelector((state) => state.messagesData.messages);
-  console.log('XXX', messages);
+  console.log('messages', messages);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -88,22 +88,13 @@ export default () => {
       currentChannelId,
     },
     onSubmit: (values, { resetForm }) => {
-      console.log('YOU CLICKED THE BUTTON!');
-      console.log(values);
       const newMessage = {
         message: values.message,
         username: values.username,
         channelId: currentChannelId,
       };
       api.sendMessage(newMessage);
-      // dispatch(addNewMessage(newMessage));
-      console.log('Message api sent!');
       resetForm();
-      // const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-      // console.log('DATA', data);
-      // data.username = username;
-      // dispatch(setChannelsData(data));
-      console.log('And final!');
     },
   });
 
