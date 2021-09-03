@@ -87,14 +87,15 @@ export default () => {
       currentChannelId,
     },
     onSubmit: (values, { resetForm }) => {
-      console.log('Clicked chatPage button!');
       const newMessage = {
         message: values.message,
         username: values.username,
         channelId: currentChannelId,
       };
       api.sendMessage(newMessage);
+      console.log('Message sent!');
       resetForm();
+      console.log('And form reset!');
     },
   });
 

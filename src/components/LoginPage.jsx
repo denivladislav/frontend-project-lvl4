@@ -39,7 +39,6 @@ export default () => {
     },
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
-      console.log('LOGIN PAGE BUTTON');
       setAuthFailed(false);
       try {
         const res = await axios.post(routes.loginPath(), values);
@@ -56,10 +55,6 @@ export default () => {
       }
     },
   });
-
-  // history.listen((location) => {
-  //   console.log(location);
-  // });
 
   return (
     <Row className="justify-content-center align-content-center h-100">
