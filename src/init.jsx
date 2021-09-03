@@ -24,6 +24,7 @@ const initApi = (socket, apiStore) => {
   };
 
   socket.on('newMessage', (newMessage) => {
+    console.log('TRIGGERED');
     apiStore.dispatch(addNewMessage(newMessage));
   });
 

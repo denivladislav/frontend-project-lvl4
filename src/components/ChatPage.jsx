@@ -86,7 +86,7 @@ export default () => {
       username,
       currentChannelId,
     },
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: (values, { resetForm }) => {
       console.log('YOU CLICKED THE BUTTON!');
       console.log(values);
       const newMessage = {
@@ -94,7 +94,7 @@ export default () => {
         username: values.username,
         channelId: currentChannelId,
       };
-      await api.sendMessage(newMessage);
+      api.sendMessage(newMessage);
       console.log('Message api sent!');
       resetForm();
       // const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
