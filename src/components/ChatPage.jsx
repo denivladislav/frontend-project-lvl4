@@ -97,10 +97,10 @@ export default () => {
       await api.sendMessage(newMessage);
       console.log('Message api sent!');
       resetForm();
-      const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-      console.log('DATA', data);
-      data.username = username;
-      dispatch(setChannelsData(data));
+      // const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
+      // console.log('DATA', data);
+      // data.username = username;
+      // dispatch(setChannelsData(data));
       console.log('And final!');
     },
   });
