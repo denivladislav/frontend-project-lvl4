@@ -59,15 +59,17 @@ export default () => {
   const myState = useSelector((state) => state);
   console.log('myState', myState);
 
+  /* eslint-disable */
   useEffect(() => {
     const fetchContent = async () => {
       const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-      data.username = JSON.parse(localStorage.getItem('userId'));
+      data.username = username;
       dispatch(setChannelsData(data));
     };
 
     fetchContent();
-  }, []);
+  }, []); 
+  /* eslint-enable */
 
   useEffect(() => {
     inputRef.current.focus();
