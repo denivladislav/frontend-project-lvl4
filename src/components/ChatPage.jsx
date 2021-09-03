@@ -17,7 +17,7 @@ import axios from 'axios';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannelsData, setCurrentChannel } from '../slices/channelsSlice.js';
-import { addNewMessage } from '../slices/messagesSlice.js';
+// import { addNewMessage } from '../slices/messagesSlice.js';
 import { openModal } from '../slices/modalSlice.js';
 import routes from '../routes.js';
 import useApi from '../hooks/useApi.jsx';
@@ -95,7 +95,7 @@ export default () => {
         username: values.username,
         channelId: currentChannelId,
       };
-      api.sendMessage(newMessage);
+      api.newMessage(newMessage);
       // dispatch(addNewMessage(newMessage));
       console.log('Message api sent!');
       resetForm();

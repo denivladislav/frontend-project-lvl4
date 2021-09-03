@@ -17,11 +17,11 @@ import '../assets/application.scss';
 
 const initApi = (socket, apiStore) => {
   const api = {
-    sendMessage: (newMessage) => {
+    newMessage: (newMessage) => {
       console.log('API SEND MESSAGE');
       socket.emit('newMessage', newMessage);
     },
-    addChannel: (newChannel) => socket.emit('newChannel', newChannel),
+    newChannel: (newChannel) => socket.emit('newChannel', newChannel),
     renameChannel: (id, name) => socket.emit('renameChannel', { id, name }),
     removeChannel: (id) => socket.emit('removeChannel', { id }),
   };
