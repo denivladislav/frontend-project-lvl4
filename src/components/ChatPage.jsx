@@ -127,8 +127,7 @@ export default () => {
               size="sm"
               className="px-1 py-0 btn-primary"
             >
-              ＋
-              <span className="visually-hidden">{t('chat.addChannel')}</span>
+              +
             </Button>
           </Col>
           <ListGroup variant="pills" className="justify-content-between flex-column px-2">
