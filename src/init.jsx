@@ -57,8 +57,8 @@ export default async () => {
       },
     },
   });
-  // eslint-disable-next-line new-cap
-  const socket = new io();
+
+  const socket = io();
   const api = initApi(socket, store);
 
   const rollbarConfig = {
