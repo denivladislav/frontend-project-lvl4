@@ -76,7 +76,7 @@ const ChatRoute = ({ children, path }) => {
   );
 };
 
-export default () => {
+const App = () => {
   const [t] = useTranslation();
   return (
     <AuthProvider>
@@ -114,3 +114,5 @@ export default () => {
     </AuthProvider>
   );
 };
+
+export default App;

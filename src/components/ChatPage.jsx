@@ -17,7 +17,6 @@ import axios from 'axios';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannelsData, setCurrentChannel } from '../slices/channelsSlice.js';
-// import { addNewMessage } from '../slices/messagesSlice.js';
 import { openModal } from '../slices/modalSlice.js';
 import routes from '../routes.js';
 import useApi from '../hooks/useApi.jsx';
@@ -63,7 +62,7 @@ export default () => {
   useEffect(() => {
     const fetchContent = async () => {
       const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-      data.username = username;
+      data.username = JSON.parse(localStorage.getItem('userId'));
       dispatch(setChannelsData(data));
     };
 

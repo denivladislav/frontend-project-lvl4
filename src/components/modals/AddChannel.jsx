@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import useApi from '../../hooks/useApi.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 
-export default ({ channelsNames, username }) => {
+const AddChannel = ({ channelsNames, username }) => {
   const dispatch = useDispatch();
   const api = useApi();
   const inputRef = useRef();
@@ -80,3 +80,5 @@ export default ({ channelsNames, username }) => {
     </Modal>
   );
 };
+
+export default AddChannel;

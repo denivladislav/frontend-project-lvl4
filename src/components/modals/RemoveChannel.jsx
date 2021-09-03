@@ -8,7 +8,7 @@ import {
 import useApi from '../../hooks/useApi.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 
-export default ({ channel }) => {
+const RemoveChannel = ({ channel }) => {
   const dispatch = useDispatch();
   const api = useApi();
   const [t] = useTranslation();
@@ -38,3 +38,5 @@ export default ({ channel }) => {
     </Modal>
   );
 };
+
+export default RemoveChannel;
