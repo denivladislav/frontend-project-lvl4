@@ -95,7 +95,7 @@ export default () => {
         username: values.username,
         channelId: currentChannelId,
       };
-      api.newMessage(newMessage);
+      api.sendMessage(newMessage);
       // dispatch(addNewMessage(newMessage));
       console.log('Message api sent!');
       resetForm();
