@@ -187,8 +187,11 @@ export default () => {
                     ref={inputRef}
                     required
                   />
+                  <Button type="submit" variant="outline-secondary">
+                    ➞
+                    <span className="visually-hidden">{t('chat.submit')}</span>
+                  </Button>
                 </InputGroup>
-                <Button type="submit" variant="outline-secondary">{t('chat.submit')}</Button>
               </Form>
             </div>
           </Col>
