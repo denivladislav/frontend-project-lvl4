@@ -29,7 +29,7 @@
       "count_1": "{{count}} сообщения",
       "count_2": "{{count}} сообщений"
     },
-    "addChannel": "Добавить канал",
+    "addChannel": "+",
     "renameChannel": "Переименовать",
     "removeChannel": "Удалить"
   },
