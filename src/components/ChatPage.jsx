@@ -94,7 +94,7 @@ export default () => {
         username: values.username,
         channelId: currentChannelId,
       };
-      api.sendMessage(newMessage);
+      await api.sendMessage(newMessage);
       console.log('Message api sent!');
       resetForm();
       const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
