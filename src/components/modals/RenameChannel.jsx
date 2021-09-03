@@ -56,7 +56,9 @@ export default ({ channelsNames, channel }) => {
               isInvalid={formik.touched.name && formik.errors.name}
             />
             <Form.Control.Feedback type="invalid">
-              {t(`errors.${formik.errors.name}`)}
+              {formik.touched.name && formik.errors.name
+                ? t(`errors.${formik.errors.name}`)
+                : null}
             </Form.Control.Feedback>
           </InputGroup>
         </Form>

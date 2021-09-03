@@ -24,7 +24,7 @@ import useApi from '../hooks/useApi.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from './modals/index.js';
 
-const Modal = ({
+const renderModal = ({
   modalType, channel, channelsNames, username,
 }) => {
   const ModalComponent = getModal(modalType);
@@ -113,13 +113,6 @@ export default () => {
 
   return (
     <>
-      <Modal
-        modalType={modalType}
-        username={username}
-        channel={managedChannel}
-        channelsNames={channelsNames}
-      />
-
       <Row className="h-100">
         <Col className="col-4 col-md-2 border-end bg-light pt-5 px-0">
           <Col className="d-flex justify-content-between mb-2 ps-2 pe-2">
@@ -131,7 +124,7 @@ export default () => {
               size="sm"
               className="px-1 py-0 btn-primary"
             >
-              +
+              {t('chat.addChannel')}
             </Button>
           </Col>
           <ListGroup variant="pills" className="justify-content-between flex-column px-2">
@@ -201,6 +194,10 @@ export default () => {
           </Col>
         </Col>
       </Row>
+
+      {renderModal({
+        modalType, username, channel: managedChannel, channelsNames,
+      })}
     </>
   );
 };
