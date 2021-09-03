@@ -46,7 +46,7 @@ const initApi = (socket, apiStore) => {
   return api;
 };
 
-export default async (socket = io()) => {
+export default async () => {
   const i18nInstance = i18n.createInstance();
   await i18nInstance.init({
     lng: 'ru',
@@ -57,7 +57,7 @@ export default async (socket = io()) => {
       },
     },
   });
-
+  const socket = io();
   const api = initApi(socket, store);
 
   const rollbarConfig = {
