@@ -56,9 +56,11 @@ export default () => {
     .filter((message) => message.channelId === currentChannelId);
   const modalType = useSelector((state) => state.modalInfo.modalType);
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
-  // const myState = useSelector((state) => state);
-  // console.log('myState', myState);
+  const myState = useSelector((state) => state);
+  console.log('myState', myState);
   // console.log('username', username);
+  const messages = useSelector((state) => state.messagesData.messages);
+  console.log('XXX', messages);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -85,6 +87,7 @@ export default () => {
       currentChannelId,
     },
     onSubmit: (values, { resetForm }) => {
+      console.log('Clicked chatPage button!');
       const newMessage = {
         message: values.message,
         username: values.username,

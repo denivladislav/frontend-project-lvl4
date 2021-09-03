@@ -48,7 +48,6 @@ export default () => {
     },
     validationSchema: SignUpSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log('You clicked the button!');
       setSignUpFailed(false);
       try {
         const res = await axios.post(routes.signUpPath(), values);
