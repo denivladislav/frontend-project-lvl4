@@ -40,7 +40,6 @@ const renderModal = ({
 };
 
 export default () => {
-  console.log('ENTER!');
   const api = useApi();
   const dispatch = useDispatch();
   const inputRef = useRef();
@@ -88,7 +87,7 @@ export default () => {
       currentChannelId,
     },
     onSubmit: async (values, { resetForm }) => {
-      console.log('YOU CLICKE THE BUTTON!');
+      console.log('YOU CLICKED THE BUTTON!');
       console.log(values);
       const newMessage = {
         message: values.message,
@@ -96,14 +95,13 @@ export default () => {
         channelId: currentChannelId,
       };
       api.sendMessage(newMessage);
-      console.log('Message sent!');
+      console.log('Message api sent!');
       resetForm();
-      console.log('And form reset!');
       const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
       console.log('DATA', data);
       data.username = username;
       dispatch(setChannelsData(data));
-      console.log('And fetch content!');
+      console.log('And final!');
     },
   });
 
