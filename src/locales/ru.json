@@ -22,7 +22,7 @@
   },
   "chat": {
     "input": "Введите сообщение",
-    "submit": "Отправить",
+    "submit": "Специально ошибка",
     "сhannels": "Каналы",
     "messageCounter": {
       "count_0": "{{count}} сообщение",

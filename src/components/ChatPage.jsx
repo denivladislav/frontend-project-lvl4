@@ -185,7 +185,7 @@ export default () => {
                     required
                   />
                 </InputGroup>
-                <Button role="button" type="submit" name={t('chat.submit')} variant="outline-secondary">Отправить</Button>
+                <Button type="submit" variant="outline-secondary">{t('chat.submit')}</Button>
               </Form>
             </div>
           </Col>
