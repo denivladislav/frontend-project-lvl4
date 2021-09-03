@@ -184,7 +184,11 @@ export default () => {
                     ref={inputRef}
                     required
                   />
-                  <Button type="submit" variant="outline-secondary">
+                  <Button
+                    aria-hidden={modalType !== null}
+                    type="submit"
+                    variant="outline-secondary"
+                  >
                     ➞
                     <span className="visually-hidden">{t('chat.submit')}</span>
                   </Button>
