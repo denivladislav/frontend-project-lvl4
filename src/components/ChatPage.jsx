@@ -87,7 +87,7 @@ export default () => {
       username,
       currentChannelId,
     },
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       const newMessage = {
         message: values.message,
         username: values.username,
@@ -97,6 +97,11 @@ export default () => {
       console.log('Message sent!');
       resetForm();
       console.log('And form reset!');
+      const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
+      console.log('DATA', data);
+      data.username = username;
+      dispatch(setChannelsData(data));
+      console.log('And fetch content!');
     },
   });
 
