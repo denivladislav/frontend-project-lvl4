@@ -96,7 +96,7 @@ export default () => {
         channelId: currentChannelId,
       };
       api.sendMessage(newMessage);
-      dispatch(addNewMessage(newMessage));
+      // dispatch(addNewMessage(newMessage));
       console.log('Message api sent!');
       resetForm();
       // const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
