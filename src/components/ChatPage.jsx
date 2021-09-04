@@ -23,7 +23,108 @@ import useApi from '../hooks/useApi.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from './modals/index.js';
 
-const renderModal = ({
+const ChatForm = ({ username, currentChannelId, modalType }) => {
+  const inputRef = useRef();
+  const api = useApi();
+  const [t] = useTranslation();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [currentChannelId]);
+
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+      username,
+      currentChannelId,
+    },
+    onSubmit: (values, { resetForm }) => {
+      const newMessage = {
+        message: values.message,
+        username: values.username,
+        channelId: currentChannelId,
+      };
+      api.sendMessage(newMessage);
+      resetForm();
+    },
+  });
+
+  return (
+    <Form onSubmit={formik.handleSubmit}>
+      <InputGroup>
+        <Form.Control
+          data-testid="new-message"
+          onChange={formik.handleChange}
+          value={formik.values.message}
+          placeholder={t('chat.input')}
+          name="message"
+          id="message"
+          ref={inputRef}
+          required
+        />
+        <Button
+          aria-hidden={modalType !== null}
+          type="submit"
+          variant="outline-secondary"
+        >
+          ➞
+          <span className="visually-hidden">{t('chat.submit')}</span>
+        </Button>
+      </InputGroup>
+    </Form>
+  );
+};
+
+const ChannelsList = ({ channels, currentChannelId }) => {
+  const dispatch = useDispatch();
+  const [t] = useTranslation();
+
+  const DropdownComponent = ({ variant, dropdownClass, channel }) => {
+    if (!channel.removable) {
+      return null;
+    }
+    return (
+      <DropdownButton title="" variant={variant} className={dropdownClass} as={ButtonGroup}>
+        <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'renameChannel', managedChannel: channel }))} eventKey="1">
+          {t('chat.renameChannel')}
+        </Dropdown.Item>
+        <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'removeChannel', managedChannel: channel }))} eventKey="2">
+          {t('chat.removeChannel')}
+        </Dropdown.Item>
+      </DropdownButton>
+    );
+  };
+
+  return (
+    <ListGroup variant="pills" className="justify-content-between flex-column px-2">
+      {channels.map((channel) => {
+        const buttonClass = cn('w-100', 'mb-1', 'rounded-0', 'text-start', 'text-truncate');
+        const dropdownClass = cn('mb-1');
+        const variant = channel.id === currentChannelId ? 'secondary' : 'light';
+        return (
+          <Nav.Item key={channel.id} className="w-100">
+            <ButtonGroup className="d-flex dropdown">
+              <Button
+                onClick={() => dispatch(setCurrentChannel({ id: channel.id }))}
+                variant={variant}
+                className={buttonClass}
+              >
+                {channel.name}
+              </Button>
+              <DropdownComponent
+                variant={variant}
+                dropdownClass={dropdownClass}
+                channel={channel}
+              />
+            </ButtonGroup>
+          </Nav.Item>
+        );
+      })}
+    </ListGroup>
+  );
+};
+
+const Modal = ({
   modalType, channel, channelsNames, username,
 }) => {
   const ModalComponent = getModal(modalType);
@@ -40,9 +141,7 @@ const renderModal = ({
 };
 
 const ChatPage = () => {
-  const api = useApi();
   const dispatch = useDispatch();
-  const inputRef = useRef();
   const lastMessageRef = useRef();
   const auth = useAuth();
   const [t] = useTranslation();
@@ -72,45 +171,8 @@ const ChatPage = () => {
   /* eslint-enable */
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, [currentChannelId]);
-
-  useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
   });
-
-  const formik = useFormik({
-    initialValues: {
-      message: '',
-      username,
-      currentChannelId,
-    },
-    onSubmit: (values, { resetForm }) => {
-      const newMessage = {
-        message: values.message,
-        username: values.username,
-        channelId: currentChannelId,
-      };
-      api.sendMessage(newMessage);
-      resetForm();
-    },
-  });
-
-  const renderDropdownComponent = ({ variant, dropdownClass, channel }) => {
-    if (!channel.removable) {
-      return null;
-    }
-    return (
-      <DropdownButton title="" variant={variant} className={dropdownClass} as={ButtonGroup}>
-        <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'renameChannel', managedChannel: channel }))} eventKey="1">
-          {t('chat.renameChannel')}
-        </Dropdown.Item>
-        <Dropdown.Item active={false} onClick={() => dispatch(openModal({ modalType: 'removeChannel', managedChannel: channel }))} eventKey="2">
-          {t('chat.removeChannel')}
-        </Dropdown.Item>
-      </DropdownButton>
-    );
-  };
 
   return (
     <>
@@ -128,27 +190,10 @@ const ChatPage = () => {
               {t('chat.addChannel')}
             </Button>
           </Col>
-          <ListGroup variant="pills" className="justify-content-between flex-column px-2">
-            {channels.map((channel) => {
-              const buttonClass = cn('w-100', 'mb-1', 'rounded-0', 'text-start', 'text-truncate');
-              const dropdownClass = cn('mb-1');
-              const variant = channel.id === currentChannelId ? 'secondary' : 'light';
-              return (
-                <Nav.Item key={channel.id} className="w-100">
-                  <ButtonGroup className="d-flex dropdown">
-                    <Button
-                      onClick={() => dispatch(setCurrentChannel({ id: channel.id }))}
-                      variant={variant}
-                      className={buttonClass}
-                    >
-                      {channel.name}
-                    </Button>
-                    {renderDropdownComponent({ variant, dropdownClass, channel })}
-                  </ButtonGroup>
-                </Nav.Item>
-              );
-            })}
-          </ListGroup>
+          <ChannelsList
+            channels={channels}
+            currentChannelId={currentChannelId}
+          />
         </Col>
         <Col className="p-0 h-100">
           <Col className="flex-column d-flex h-100">
@@ -173,36 +218,22 @@ const ChatPage = () => {
               <div ref={lastMessageRef} />
             </div>
             <div className="mt-auto px-5 py-3">
-              <Form onSubmit={formik.handleSubmit}>
-                <InputGroup>
-                  <Form.Control
-                    data-testid="new-message"
-                    onChange={formik.handleChange}
-                    value={formik.values.message}
-                    placeholder={t('chat.input')}
-                    name="message"
-                    id="message"
-                    ref={inputRef}
-                    required
-                  />
-                  <Button
-                    aria-hidden={modalType !== null}
-                    type="submit"
-                    variant="outline-secondary"
-                  >
-                    ➞
-                    <span className="visually-hidden">{t('chat.submit')}</span>
-                  </Button>
-                </InputGroup>
-              </Form>
+              <ChatForm
+                username={username}
+                currentChannelId={currentChannelId}
+                modalType={modalType}
+              />
             </div>
           </Col>
         </Col>
       </Row>
 
-      {renderModal({
-        modalType, username, channel: managedChannel, channelsNames,
-      })}
+      <Modal
+        modalType={modalType}
+        username={username}
+        channel={managedChannel}
+        channelsNames={channelsNames}
+      />
     </>
   );
 };

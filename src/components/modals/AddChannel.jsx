@@ -7,16 +7,18 @@ import {
   Button,
   Form,
   InputGroup,
+  Col,
 } from 'react-bootstrap';
 import * as Yup from 'yup';
 import useApi from '../../hooks/useApi.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 
-const AddChannel = ({ channelsNames, username }) => {
-  const dispatch = useDispatch();
+const AddChannelForm = ({ channelsNames, username }) => {
   const api = useApi();
   const inputRef = useRef();
   const [t] = useTranslation();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -42,6 +44,41 @@ const AddChannel = ({ channelsNames, username }) => {
       }
     },
   });
+
+  return (
+    <Form onSubmit={formik.handleSubmit}>
+      <InputGroup>
+        <Form.Control
+          data-testid="add-channel"
+          onChange={formik.handleChange}
+          value={formik.values.name}
+          name="name"
+          id="name"
+          ref={inputRef}
+          isInvalid={formik.touched.name && formik.errors.name}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formik.touched.name && formik.errors.name
+            ? t(`errors.${formik.errors.name}`)
+            : null}
+        </Form.Control.Feedback>
+      </InputGroup>
+      <Col className="mt-2 text-end">
+        <Button className="mx-2" variant="secondary" onClick={() => dispatch(closeModal())}>
+          {t('modal.cancel')}
+        </Button>
+        <Button disabled={formik.isSubmitting} variant="primary" onClick={formik.handleSubmit}>
+          {t('modal.submit')}
+        </Button>
+      </Col>
+    </Form>
+  );
+};
+
+const AddChannel = ({ channelsNames, username }) => {
+  const dispatch = useDispatch();
+  const [t] = useTranslation();
+
   return (
     <Modal centered show onHide={() => dispatch(closeModal())}>
       <Modal.Header closeButton>
@@ -50,33 +87,8 @@ const AddChannel = ({ channelsNames, username }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={formik.handleSubmit}>
-          <InputGroup>
-            <Form.Control
-              data-testid="add-channel"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              name="name"
-              id="name"
-              ref={inputRef}
-              isInvalid={formik.touched.name && formik.errors.name}
-            />
-            <Form.Control.Feedback type="invalid">
-              {formik.touched.name && formik.errors.name
-                ? t(`errors.${formik.errors.name}`)
-                : null}
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form>
+        <AddChannelForm channelsNames={channelsNames} username={username} />
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => dispatch(closeModal())}>
-          {t('modal.cancel')}
-        </Button>
-        <Button disabled={formik.isSubmitting} variant="primary" onClick={formik.handleSubmit}>
-          {t('modal.submit')}
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
