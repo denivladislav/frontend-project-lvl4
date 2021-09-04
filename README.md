@@ -1,5 +1,6 @@
 # Чат
 Упрощённая версия Slack.
+![chatScreenshot](https://user-images.githubusercontent.com/71961494/132099420-d41b53a2-00a5-4465-ae7e-d41fb057e0df.png)
 
 [![Actions Status](https://github.com/denivladislav/frontend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/denivladislav/frontend-project-lvl4/actions)
 [![Node CI](https://github.com/denivladislav/frontend-project-lvl4/actions/workflows/nodejs.yml/badge.svg)](https://github.com/denivladislav/frontend-project-lvl4/actions/workflows/nodejs.yml)
