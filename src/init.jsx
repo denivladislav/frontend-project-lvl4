@@ -53,6 +53,7 @@ export default async (socket = io()) => {
       },
     },
   });
+
   const api = initApi(socket, store);
 
   const rollbarConfig = {
