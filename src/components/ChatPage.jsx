@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import {
@@ -12,6 +12,7 @@ import {
   DropdownButton,
   ListGroup,
   Nav,
+  Spinner,
 } from 'react-bootstrap';
 import axios from 'axios';
 import cn from 'classnames';
@@ -147,6 +148,8 @@ const ChatPage = () => {
   const [t] = useTranslation();
   const username = auth.getUsername();
 
+  const [connectionFailed, setConnectionFailed] = useState(false);
+
   const channels = useSelector((state) => state.channelsData.channels);
   const channelsNames = channels.map((c) => c.name);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
@@ -161,9 +164,15 @@ const ChatPage = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
-      const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-      data.username = username;
-      dispatch(setChannelsData(data));
+      setConnectionFailed(false);
+      try {
+        const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
+        data.username = username;
+        dispatch(setChannelsData(data));
+      } catch (err) {
+        setConnectionFailed(true);
+        console.error('Network error');
+      }
     };
 
     fetchContent();
@@ -178,6 +187,13 @@ const ChatPage = () => {
       <Row className="h-100">
         <Col className="col-4 col-md-2 border-end bg-light pt-5 px-0">
           <Col className="d-flex justify-content-between mb-2 ps-2 pe-2">
+            {connectionFailed
+              ? (
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              )
+              : null}
             <Col className="ps-2">
               {t('chat.сhannels')}
             </Col>
@@ -187,7 +203,7 @@ const ChatPage = () => {
               className="px-1 py-0 btn-primary"
             >
               <span
-                style={{ 'padding-left': 1 }}
+                style={{ paddingLeft: 1 }}
               >
                 {t('chat.addChannel')}
               </span>
