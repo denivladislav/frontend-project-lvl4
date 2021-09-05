@@ -4,9 +4,17 @@ import authContext from '../contexts/authContext.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(_.has(localStorage, 'userId'));
-  const logIn = () => setLoggedIn(true);
+  const [username, setUsername] = useState(null);
+
+  const logIn = (data) => {
+    localStorage.setItem('userId', JSON.stringify(data));
+    setUsername(data.username);
+    setLoggedIn(true);
+  };
+
   const logOut = () => {
     localStorage.removeItem('userId');
+    setUsername(null);
     setLoggedIn(false);
   };
 
@@ -20,12 +28,15 @@ const AuthProvider = ({ children }) => {
     return {};
   };
 
+  const getUsername = () => username;
+
   return (
     <authContext.Provider value={{
       loggedIn,
       logIn,
       logOut,
       getAuthHeader,
+      getUsername,
     }}
     >
       {children}

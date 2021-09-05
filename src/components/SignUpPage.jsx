@@ -49,8 +49,7 @@ const SignUpForm = () => {
       setSignUpFailed(false);
       try {
         const res = await axios.post(routes.signUpPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
+        auth.logIn(res.data);
         history.replace('/');
         resetForm();
       } catch (err) {

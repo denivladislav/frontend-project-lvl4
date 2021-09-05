@@ -146,7 +146,7 @@ const ChatPage = () => {
   const auth = useAuth();
   const [t] = useTranslation();
 
-  const { username } = JSON.parse(localStorage.getItem('userId'));
+  const username = auth.getUsername();
   const channels = useSelector((state) => state.channelsData.channels);
   const channelsNames = channels.map((c) => c.name);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
@@ -157,8 +157,8 @@ const ChatPage = () => {
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const myState = useSelector((state) => state);
   console.log('myState', myState);
+  console.log('username:', username);
 
-  /* eslint-disable */
   useEffect(() => {
     const fetchContent = async () => {
       const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
@@ -167,8 +167,7 @@ const ChatPage = () => {
     };
 
     fetchContent();
-  }, []); 
-  /* eslint-enable */
+  }, []);
 
   useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
