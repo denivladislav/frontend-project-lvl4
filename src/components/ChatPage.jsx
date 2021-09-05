@@ -145,8 +145,8 @@ const ChatPage = () => {
   const lastMessageRef = useRef();
   const auth = useAuth();
   const [t] = useTranslation();
-
   const username = auth.getUsername();
+
   const channels = useSelector((state) => state.channelsData.channels);
   const channelsNames = channels.map((c) => c.name);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
@@ -186,7 +186,11 @@ const ChatPage = () => {
               size="sm"
               className="px-1 py-0 btn-primary"
             >
-              {t('chat.addChannel')}
+              <span
+                style={{ 'padding-left': 1, 'vertical-align': 'top' }}
+              >
+                {t('chat.addChannel')}
+              </span>
             </Button>
           </Col>
           <ChannelsList

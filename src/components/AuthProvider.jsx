@@ -3,8 +3,10 @@ import _ from 'lodash';
 import authContext from '../contexts/authContext.jsx';
 
 const AuthProvider = ({ children }) => {
+  const userId = JSON.parse(localStorage.getItem('userId'));
+
   const [loggedIn, setLoggedIn] = useState(_.has(localStorage, 'userId'));
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState(userId ? userId.username : null);
 
   const logIn = (data) => {
     localStorage.setItem('userId', JSON.stringify(data));
@@ -19,8 +21,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const getAuthHeader = () => {
-    const userId = JSON.parse(localStorage.getItem('userId'));
-
     if (userId && userId.token) {
       return { Authorization: `Bearer ${userId.token}` };
     }
