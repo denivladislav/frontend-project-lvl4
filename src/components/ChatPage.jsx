@@ -187,7 +187,7 @@ const ChatPage = () => {
               className="px-1 py-0 btn-primary"
             >
               <span
-                style={{ 'padding-left': 1, 'vertical-align': 'top' }}
+                style={{ 'padding-left': 1 }}
               >
                 {t('chat.addChannel')}
               </span>
