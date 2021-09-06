@@ -164,10 +164,6 @@ const ChatPage = () => {
     .filter((message) => message.channelId === currentChannelId);
   const modalType = useSelector((state) => state.modalInfo.modalType);
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
-  const myState = useSelector((state) => state);
-  console.log('myState', myState);
-  console.log('username:', username);
-  console.log(loadingStatus);
 
   useEffect(() => {
     const fetchContent = async () => {
