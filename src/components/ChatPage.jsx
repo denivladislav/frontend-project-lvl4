@@ -141,6 +141,12 @@ const Modal = ({
     : null;
 };
 
+const LoadingSpinner = () => (
+  <Spinner className="ms-4" animation="border" role="status">
+    <span className="visually-hidden">Loading...</span>
+  </Spinner>
+);
+
 const ChatPage = () => {
   const dispatch = useDispatch();
   const lastMessageRef = useRef();
@@ -148,7 +154,7 @@ const ChatPage = () => {
   const [t] = useTranslation();
   const username = auth.getUsername();
 
-  const [connectionFailed, setConnectionFailed] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState(null);
 
   const channels = useSelector((state) => state.channelsData.channels);
   const channelsNames = channels.map((c) => c.name);
@@ -161,16 +167,18 @@ const ChatPage = () => {
   const myState = useSelector((state) => state);
   console.log('myState', myState);
   console.log('username:', username);
+  console.log(loadingStatus);
 
   useEffect(() => {
     const fetchContent = async () => {
-      setConnectionFailed(false);
+      setLoadingStatus('loading');
       try {
         const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
         data.username = username;
         dispatch(setChannelsData(data));
+        setLoadingStatus('finished');
       } catch (err) {
-        setConnectionFailed(true);
+        setLoadingStatus('failed');
         console.error('Network error');
       }
     };
@@ -187,13 +195,6 @@ const ChatPage = () => {
       <Row className="h-100">
         <Col className="col-4 col-md-2 border-end bg-light pt-5 px-0">
           <Col className="d-flex justify-content-between mb-2 ps-2 pe-2">
-            {connectionFailed
-              ? (
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
-              )
-              : null}
             <Col className="ps-2">
               {t('chat.сhannels')}
             </Col>
@@ -209,6 +210,9 @@ const ChatPage = () => {
               </span>
             </Button>
           </Col>
+          {loadingStatus === 'loading'
+            ? <LoadingSpinner />
+            : null}
           <ChannelsList
             channels={channels}
             currentChannelId={currentChannelId}
@@ -226,6 +230,11 @@ const ChatPage = () => {
               </span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
+              {loadingStatus === 'failed'
+                ? (
+                  <div>{t('errors.network')}</div>
+                )
+                : null}
               {currentChannelMessages.map((msg) => (
                 <p key={msg.id}>
                   <b>{msg.username}</b>

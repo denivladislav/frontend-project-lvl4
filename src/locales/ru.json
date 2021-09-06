@@ -52,6 +52,7 @@
     "invalidPasswordLength": "Не менее 6 символов",
     "unconfirmedPassword": "Пароли должны совпадать",
     "duplicatedUsername": "Такой пользователь уже существует",
-    "duplicatedChannel": "Такой канал уже существует"
+    "duplicatedChannel": "Такой канал уже существует",
+    "network": "Пропало интернет-соединение. Попробуйте перезагрузить страницу"
   }
 }
