@@ -58,12 +58,11 @@ export default async (socket = io()) => {
 
   const rollbarConfig = {
     accessToken: process.env.ROLLBAR_TOKEN,
+    enabled: process.env.NODE_ENV === 'production',
     environment: 'production',
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
-
-  console.log(rollbarConfig.accessToken);
 
   return (
     <I18nextProvider i18n={i18nInstance}>

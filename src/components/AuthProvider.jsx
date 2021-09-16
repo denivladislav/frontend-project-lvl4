@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import _ from 'lodash';
 import authContext from '../contexts/authContext.jsx';
 
 const AuthProvider = ({ children }) => {
   const userId = JSON.parse(localStorage.getItem('userId'));
 
-  const [loggedIn, setLoggedIn] = useState(_.has(localStorage, 'userId'));
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.userId);
   const [username, setUsername] = useState(userId ? userId.username : null);
 
   const logIn = (data) => {
