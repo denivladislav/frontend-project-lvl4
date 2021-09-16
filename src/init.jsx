@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import translationRU from './locales/ru.json';
 import App from './components/App.jsx';
-import store from './store.js';
+import store from './slices/index.js';
 import ApiContext from './contexts/apiContext.jsx';
 import { addNewMessage } from './slices/messagesSlice.js';
 import { addNewChannel, renameChannel, removeChannel } from './slices/channelsSlice.js';
@@ -57,11 +57,13 @@ export default async (socket = io()) => {
   const api = initApi(socket, store);
 
   const rollbarConfig = {
-    accessToken: '7363e2783f55410eae00e47508c66796',
+    accessToken: process.env.ROLLBAR_TOKEN,
     environment: 'production',
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
+
+  console.log(rollbarConfig.accessToken);
 
   return (
     <I18nextProvider i18n={i18nInstance}>
