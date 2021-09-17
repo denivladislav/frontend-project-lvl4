@@ -10,7 +10,7 @@ import getModal from './modals/index.js';
 import ChatBox from './ChatBox.jsx';
 import { selectChannelsNames } from '../selectors.js';
 
-const Modal = ({ username, modalType }) => {
+const Modal = ({ username, modalType, loadingStatus }) => {
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const channelsNames = useSelector(selectChannelsNames);
   const ModalComponent = getModal(modalType);
@@ -21,6 +21,7 @@ const Modal = ({ username, modalType }) => {
         modalType={modalType}
         channel={managedChannel}
         channelsNames={channelsNames}
+        loadingStatus={loadingStatus}
       />
     )
     : null;
@@ -62,6 +63,7 @@ const ChatPage = () => {
         <Modal
           username={username}
           modalType={modalType}
+          loadingStatus={loadingStatus}
         />
       </>
     );

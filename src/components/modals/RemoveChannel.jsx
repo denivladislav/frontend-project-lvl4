@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import {
@@ -8,13 +8,12 @@ import {
 import useApi from '../../hooks/useApi.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 
-const RemoveChannel = ({ channel }) => {
+const RemoveChannel = ({ channel, loadingStatus }) => {
   const dispatch = useDispatch();
   const api = useApi();
   const [t] = useTranslation();
-  const [isSubmitting, setSubmitting] = useState(false);
+
   const handleRemoveChannel = () => {
-    setSubmitting(true);
     api.removeChannel(channel.id);
     dispatch(closeModal());
   };
@@ -31,7 +30,7 @@ const RemoveChannel = ({ channel }) => {
         <Button variant="secondary" onClick={() => dispatch(closeModal())}>
           {t('modal.cancel')}
         </Button>
-        <Button disabled={isSubmitting} variant="danger" onClick={handleRemoveChannel}>
+        <Button disabled={loadingStatus === 'failed'} variant="danger" onClick={handleRemoveChannel}>
           {t('modal.submit')}
         </Button>
       </Modal.Footer>
