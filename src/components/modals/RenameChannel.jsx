@@ -45,6 +45,8 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
     },
   });
 
+  const isNameInvalid = formik.touched.name && formik.errors.name;
+
   return (
     <Form onSubmit={formik.handleSubmit}>
       <InputGroup>
@@ -55,10 +57,10 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
           name="name"
           id="name"
           ref={inputRef}
-          isInvalid={formik.touched.name && formik.errors.name}
+          isInvalid={isNameInvalid}
         />
         <Form.Control.Feedback type="invalid">
-          {formik.touched.name && formik.errors.name
+          {isNameInvalid
             ? t(`errors.${formik.errors.name}`)
             : null}
         </Form.Control.Feedback>

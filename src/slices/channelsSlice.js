@@ -1,21 +1,28 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import routes from '../routes.js';
+
+export const fetchChatData = createAsyncThunk(
+  'channelsData/fetchChatContentStatus',
+  async ({ header, username }) => {
+    const { data } = await axios.get(routes.dataPath(), { headers: header });
+    data.username = username;
+    return data;
+  },
+);
 
 const initialState = {
   channels: [],
   currentChannelId: 1,
   username: '',
+  loadingStatus: '',
 };
 
 export const channelsSlice = createSlice({
   name: 'channelsData',
   initialState,
   reducers: {
-    setChannelsData: (state, { payload }) => {
-      state.channels = payload.channels;
-      state.currentChannelId = payload.currentChannelId;
-      state.username = payload.username;
-    },
     setCurrentChannel: (state, { payload }) => {
       state.currentChannelId = payload.id;
     },
@@ -36,10 +43,26 @@ export const channelsSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchChatData.fulfilled, (state, { payload }) => {
+        state.channels = payload.channels;
+        state.currentChannelId = payload.currentChannelId;
+        state.username = payload.username;
+        state.loadingStatus = 'finished';
+      })
+      .addCase(fetchChatData.pending, (state) => {
+        state.loadingStatus = 'loading';
+      })
+      .addCase(fetchChatData.rejected, (state) => {
+        state.loadingStatus = 'failed';
+      });
+  },
 });
 
 export const {
-  setChannelsData, addNewChannel, setCurrentChannel, renameChannel, removeChannel,
+  setChannelsData, addNewChannel, setCurrentChannel,
+  renameChannel, removeChannel,
 } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

@@ -135,7 +135,7 @@ const ChatBox = () => {
   const username = auth.getUsername();
 
   useEffect(() => {
-    lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    lastMessageRef.current.scrollIntoView({ behavior: 'auto' });
   });
 
   return (

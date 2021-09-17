@@ -37,6 +37,7 @@ const LoginForm = () => {
       username: '',
       password: '',
     },
+    validateOnBlur: false,
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       setAuthFailed(false);
@@ -55,6 +56,9 @@ const LoginForm = () => {
     },
   });
 
+  const isUsernameInvalid = formik.touched.username && formik.errors.username;
+  const isPasswordInvaild = formik.touched.password && formik.errors.password;
+
   return (
     <Form onSubmit={formik.handleSubmit} className="p-2">
       <Form.Group className="p-2 mx-2">
@@ -67,10 +71,10 @@ const LoginForm = () => {
           id="username"
           autoComplete="username"
           ref={inputRef}
-          isInvalid={authFailed || (formik.touched.username && formik.errors.username)}
+          isInvalid={authFailed || isUsernameInvalid}
         />
         <Form.Control.Feedback type="invalid">
-          {formik.touched.username && formik.errors.username
+          {isUsernameInvalid
             ? t(`errors.${formik.errors.username}`)
             : null}
         </Form.Control.Feedback>
@@ -85,10 +89,10 @@ const LoginForm = () => {
           name="password"
           id="password"
           autoComplete="current-password"
-          isInvalid={authFailed || (formik.touched.password && formik.errors.password)}
+          isInvalid={authFailed || isPasswordInvaild}
         />
         <Form.Control.Feedback type="invalid">
-          {formik.touched.password && formik.errors.password
+          {isPasswordInvaild
             ? t(`errors.${formik.errors.password}`)
             : null}
         </Form.Control.Feedback>

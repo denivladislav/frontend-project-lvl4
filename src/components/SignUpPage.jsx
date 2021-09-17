@@ -44,6 +44,7 @@ const SignUpForm = () => {
       password: '',
       passwordConfirmation: '',
     },
+    validateOnBlur: false,
     validationSchema: SignUpSchema,
     onSubmit: async (values, { resetForm }) => {
       setSignUpFailed(false);
@@ -63,6 +64,11 @@ const SignUpForm = () => {
     },
   });
 
+  const isUsernameInvalid = formik.touched.username && formik.errors.username;
+  const isPasswordInvalid = formik.touched.password && formik.errors.password;
+  const isPasswordConfirmationInvalid = formik.touched.passwordConfirmation
+    && formik.errors.passwordConfirmation;
+
   return (
     <Form onSubmit={formik.handleSubmit} className="p-2">
       <Form.Group className="p-2 mx-2">
@@ -75,10 +81,10 @@ const SignUpForm = () => {
           id="username"
           autoComplete="username"
           ref={inputRef}
-          isInvalid={signUpFailed || (formik.touched.username && formik.errors.username)}
+          isInvalid={signUpFailed || isUsernameInvalid}
         />
         <Form.Control.Feedback type="invalid">
-          {formik.touched.username && formik.errors.username
+          {isUsernameInvalid
             ? t(`errors.${formik.errors.username}`)
             : null}
         </Form.Control.Feedback>
@@ -93,10 +99,10 @@ const SignUpForm = () => {
           name="password"
           id="password"
           autoComplete="current-password"
-          isInvalid={signUpFailed || (formik.touched.password && formik.errors.password)}
+          isInvalid={signUpFailed || isPasswordInvalid}
         />
         <Form.Control.Feedback type="invalid">
-          {formik.touched.password && formik.errors.password
+          {isPasswordInvalid
             ? t(`errors.${formik.errors.password}`)
             : null}
         </Form.Control.Feedback>
@@ -115,7 +121,7 @@ const SignUpForm = () => {
             || (formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)}
         />
         <Form.Control.Feedback type="invalid">
-          {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation
+          {isPasswordConfirmationInvalid
             ? t(`errors.${formik.errors.passwordConfirmation}`)
             : null}
         </Form.Control.Feedback>
