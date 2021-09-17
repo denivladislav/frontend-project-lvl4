@@ -57,9 +57,7 @@ const SignUpForm = () => {
         if (err.isAxiosError && err.response.status === 409) {
           setSignUpFailed(true);
           inputRef.current.select();
-          return;
         }
-        throw err;
       }
     },
   });

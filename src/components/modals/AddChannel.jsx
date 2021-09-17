@@ -35,13 +35,8 @@ const AddChannelForm = ({ channelsNames, username }) => {
     },
     validationSchema: AddChannelSchema,
     onSubmit: (values) => {
-      try {
-        api.addChannel({ name: values.name, username });
-        dispatch(closeModal());
-      } catch (err) {
-        console.log(err);
-        throw err;
-      }
+      api.addChannel({ name: values.name, username });
+      dispatch(closeModal());
     },
   });
 
