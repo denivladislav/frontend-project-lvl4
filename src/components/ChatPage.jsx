@@ -43,8 +43,8 @@ const ChatPage = () => {
   const channelsNames = channels.map((c) => c.name);
   const modalType = useSelector((state) => state.modalInfo.modalType);
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
-  const myState = useSelector((state) => state);
-  console.log(myState);
+  // const myState = useSelector((state) => state);
+  // console.log(myState);
 
   useEffect(() => {
     dispatch(fetchChatData({ header: auth.getAuthHeader(), username }));
@@ -54,7 +54,10 @@ const ChatPage = () => {
     ? <LoadingSpinner />
     : (
       <>
-        <ChatBox />
+        <ChatBox
+          channels={channels}
+          modalType={modalType}
+        />
 
         <Modal
           modalType={modalType}

@@ -121,17 +121,16 @@ const ChannelsList = ({ channels, currentChannelId }) => {
   );
 };
 
-const ChatBox = () => {
+const ChatBox = ({ channels, modalType }) => {
   const dispatch = useDispatch();
   const [t] = useTranslation();
   const auth = useAuth();
   const lastMessageRef = useRef();
-  const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
   const currentChannelMessages = useSelector((state) => state.messagesData.messages)
     .filter((message) => message.channelId === currentChannelId);
-  const modalType = useSelector((state) => state.modalInfo.modalType);
+  // const modalType = useSelector((state) => state.modalInfo.modalType);
   const username = auth.getUsername();
 
   useEffect(() => {
