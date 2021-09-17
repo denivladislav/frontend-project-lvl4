@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { openModal } from '../slices/modalSlice.js';
 import { setCurrentChannel } from '../slices/channelsSlice.js';
 import useApi from '../hooks/useApi.jsx';
-import useAuth from '../hooks/useAuth.jsx';
+import { selectCurrentChannelMessages, selectCurrentChannel } from '../selectors.js';
 
 const ChatForm = ({ username, currentChannelId, modalType }) => {
   const inputRef = useRef();
@@ -32,13 +32,12 @@ const ChatForm = ({ username, currentChannelId, modalType }) => {
   const formik = useFormik({
     initialValues: {
       message: '',
-      username,
       currentChannelId,
     },
     onSubmit: (values, { resetForm }) => {
       const newMessage = {
         message: values.message,
-        username: values.username,
+        username,
         channelId: currentChannelId,
       };
       api.sendMessage(newMessage);
@@ -121,17 +120,14 @@ const ChannelsList = ({ channels, currentChannelId }) => {
   );
 };
 
-const ChatBox = ({ channels, modalType }) => {
+const ChatBox = ({ username, modalType }) => {
   const dispatch = useDispatch();
   const [t] = useTranslation();
-  const auth = useAuth();
   const lastMessageRef = useRef();
+  const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
-  const currentChannel = channels.find((channel) => channel.id === currentChannelId);
-  const currentChannelMessages = useSelector((state) => state.messagesData.messages)
-    .filter((message) => message.channelId === currentChannelId);
-  // const modalType = useSelector((state) => state.modalInfo.modalType);
-  const username = auth.getUsername();
+  const currentChannel = useSelector(selectCurrentChannel(currentChannelId));
+  const currentChannelMessages = useSelector(selectCurrentChannelMessages(currentChannelId));
 
   useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: 'auto' });

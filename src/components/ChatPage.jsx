@@ -8,17 +8,18 @@ import { fetchChatData } from '../slices/channelsSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from './modals/index.js';
 import ChatBox from './ChatBox.jsx';
+import { selectChannelsNames } from '../selectors.js';
 
-const Modal = ({
-  modalType, channel, channelsNames, username,
-}) => {
+const Modal = ({ username, modalType }) => {
+  const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
+  const channelsNames = useSelector(selectChannelsNames);
   const ModalComponent = getModal(modalType);
   return ModalComponent
     ? (
       <ModalComponent
-        modalType={modalType}
-        channel={channel}
         username={username}
+        modalType={modalType}
+        channel={managedChannel}
         channelsNames={channelsNames}
       />
     )
@@ -36,18 +37,17 @@ const LoadingSpinner = () => (
 const ChatPage = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
-  const username = auth.getUsername();
 
   const loadingStatus = useSelector((state) => state.channelsData.status);
-  const channels = useSelector((state) => state.channelsData.channels);
-  const channelsNames = channels.map((c) => c.name);
+  const username = useSelector((state) => state.channelsData.username);
   const modalType = useSelector((state) => state.modalInfo.modalType);
-  const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
-  // const myState = useSelector((state) => state);
-  // console.log(myState);
+
+  // this selector will not exist
+  const myState = useSelector((state) => state);
+  console.log(myState);
 
   useEffect(() => {
-    dispatch(fetchChatData({ header: auth.getAuthHeader(), username }));
+    dispatch(fetchChatData({ header: auth.getAuthHeader(), username: auth.getUsername() }));
   }, []);
 
   return loadingStatus === 'loading'
@@ -55,15 +55,13 @@ const ChatPage = () => {
     : (
       <>
         <ChatBox
-          channels={channels}
+          username={username}
           modalType={modalType}
         />
 
         <Modal
-          modalType={modalType}
           username={username}
-          channel={managedChannel}
-          channelsNames={channelsNames}
+          modalType={modalType}
         />
       </>
     );
