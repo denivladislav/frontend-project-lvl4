@@ -40,8 +40,10 @@ const ChatForm = ({ username, currentChannelId, modalType }) => {
         username,
         channelId: currentChannelId,
       };
-      api.sendMessage(newMessage);
-      resetForm();
+      const res = api.sendMessage(newMessage);
+      if (res.connected) {
+        resetForm();
+      }
     },
   });
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import {
@@ -8,22 +8,36 @@ import {
   Col,
   Card,
 } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
-import axios from 'axios';
 import useAuth from '../hooks/useAuth.jsx';
-import routes from '../routes.js';
+import { postLoginData, setDefaultAuthStatus } from '../slices/loginSlice.js';
 
 const LoginForm = () => {
   const inputRef = useRef();
   const auth = useAuth();
   const history = useHistory();
-  const [authFailed, setAuthFailed] = useState(false);
+  const dispatch = useDispatch();
   const [t] = useTranslation();
+
+  const authStatus = useSelector((state) => state.loginData.authStatus);
+  const authData = useSelector((state) => state.loginData.authData);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (authStatus === 'success') {
+      auth.logIn(authData);
+      history.replace('/');
+      dispatch(setDefaultAuthStatus());
+    }
+    if (authStatus === 'failed') {
+      inputRef.current.select();
+    }
+  }, [authStatus]);
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
@@ -39,21 +53,13 @@ const LoginForm = () => {
     },
     validateOnBlur: false,
     validationSchema: LoginSchema,
-    onSubmit: async (values) => {
-      setAuthFailed(false);
-      try {
-        const res = await axios.post(routes.loginPath(), values);
-        auth.logIn(res.data);
-        history.replace('/');
-      } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
-          inputRef.current.select();
-        }
-      }
+    onSubmit: (values) => {
+      dispatch(postLoginData({ values }));
+      formik.setSubmitting(false);
     },
   });
 
+  const authFailed = authStatus === 'failed';
   const isUsernameInvalid = formik.touched.username && formik.errors.username;
   const isPasswordInvaild = formik.touched.password && formik.errors.password;
 
@@ -116,6 +122,8 @@ const LoginForm = () => {
 
 const LoginPage = () => {
   const [t] = useTranslation();
+  const myState = useSelector((state) => state);
+  console.log(myState);
   return (
     <Row className="justify-content-center align-content-center h-100">
       <Col className="col-md-2 col-lg-6">

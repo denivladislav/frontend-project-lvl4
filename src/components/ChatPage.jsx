@@ -39,7 +39,7 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
 
-  const loadingStatus = useSelector((state) => state.channelsData.status);
+  const loadingStatus = useSelector((state) => state.channelsData.loadingStatus);
   const username = useSelector((state) => state.channelsData.username);
   const modalType = useSelector((state) => state.modalInfo.modalType);
 

@@ -35,13 +35,8 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
     },
     validationSchema: RenameChannelSchema,
     onSubmit: (values) => {
-      try {
-        api.renameChannel(channel.id, values.name);
-        dispatch(closeModal());
-      } catch (err) {
-        console.log(err);
-        throw err;
-      }
+      api.renameChannel(channel.id, values.name);
+      dispatch(closeModal());
     },
   });
 

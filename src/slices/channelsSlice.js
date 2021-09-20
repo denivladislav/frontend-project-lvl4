@@ -16,7 +16,7 @@ const initialState = {
   channels: [],
   currentChannelId: 1,
   username: '',
-  loadingStatus: '',
+  loadingStatus: 'loading',
 };
 
 export const channelsSlice = createSlice({
