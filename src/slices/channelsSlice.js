@@ -5,9 +5,8 @@ import routes from '../routes.js';
 
 export const fetchChatData = createAsyncThunk(
   'channelsData/fetchChatContentStatus',
-  async ({ header, username }) => {
+  async ({ header }) => {
     const { data } = await axios.get(routes.dataPath(), { headers: header });
-    data.username = username;
     return data;
   },
 );
@@ -15,7 +14,6 @@ export const fetchChatData = createAsyncThunk(
 const initialState = {
   channels: [],
   currentChannelId: 1,
-  username: '',
   loadingStatus: 'loading',
 };
 
@@ -28,9 +26,6 @@ export const channelsSlice = createSlice({
     },
     addNewChannel: (state, { payload }) => {
       state.channels.push(payload);
-      if (state.username === payload.username) {
-        state.currentChannelId = payload.id;
-      }
     },
     renameChannel: (state, { payload }) => {
       const currentChannel = state.channels.find((channel) => channel.id === payload.id);
@@ -48,7 +43,6 @@ export const channelsSlice = createSlice({
       .addCase(fetchChatData.fulfilled, (state, { payload }) => {
         state.channels = payload.channels;
         state.currentChannelId = payload.currentChannelId;
-        state.username = payload.username;
         state.loadingStatus = 'success';
       })
       .addCase(fetchChatData.pending, (state) => {

@@ -11,7 +11,7 @@ import getModal from '../components/modals/index.js';
 import ChatBox from '../components/ChatBox.jsx';
 import { selectChannelsNames } from '../selectors.js';
 
-const Modal = ({ username, modalType, loadingStatus }) => {
+const Modal = ({ modalType, loadingStatus }) => {
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const channelsNames = useSelector(selectChannelsNames);
   const ModalComponent = getModal(modalType);
@@ -20,7 +20,6 @@ const Modal = ({ username, modalType, loadingStatus }) => {
   }
   return (
     <ModalComponent
-      username={username}
       modalType={modalType}
       channel={managedChannel}
       channelsNames={channelsNames}
@@ -44,8 +43,8 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
 
+  const username = auth.getUsername();
   const loadingStatus = useSelector((state) => state.channelsData.loadingStatus);
-  const username = useSelector((state) => state.channelsData.username);
   const modalType = useSelector((state) => state.modalInfo.modalType);
 
   // this selector will not exist
@@ -53,7 +52,7 @@ const ChatPage = () => {
   console.log(myState);
 
   useEffect(() => {
-    dispatch(fetchChatData({ header: auth.getAuthHeader(), username: auth.getUsername() }));
+    dispatch(fetchChatData({ header: auth.getAuthHeader() }));
   }, []);
 
   if (loadingStatus === 'loading') {
@@ -68,7 +67,6 @@ const ChatPage = () => {
       />
 
       <Modal
-        username={username}
         modalType={modalType}
         loadingStatus={loadingStatus}
       />

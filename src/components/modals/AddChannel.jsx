@@ -13,7 +13,7 @@ import * as Yup from 'yup';
 import useApi from '../../hooks/useApi.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 
-const AddChannelForm = ({ channelsNames, username }) => {
+const AddChannelForm = ({ channelsNames }) => {
   const api = useApi();
   const inputRef = useRef();
   const [t] = useTranslation();
@@ -35,7 +35,7 @@ const AddChannelForm = ({ channelsNames, username }) => {
     },
     validationSchema: addChannelSchema,
     onSubmit: (values) => {
-      api.addChannel({ name: values.name, username });
+      api.addChannel({ name: values.name });
       dispatch(closeModal());
     },
   });
