@@ -34,7 +34,7 @@ const LoginForm = () => {
       history.replace('/');
       dispatch(setDefaultAuthStatus());
     }
-    if (authStatus === 'failed') {
+    if (authStatus === 'error') {
       inputRef.current.select();
     }
   }, [authStatus]);
@@ -59,7 +59,7 @@ const LoginForm = () => {
     },
   });
 
-  const authFailed = authStatus === 'failed';
+  const authFailed = authStatus === 'error';
   const isUsernameValid = !(formik.touched.username && formik.errors.username);
   const isPasswordValid = !(formik.touched.password && formik.errors.password);
 

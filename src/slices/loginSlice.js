@@ -31,7 +31,7 @@ export const loginSlice = createSlice({
         state.authData = payload;
       })
       .addCase(postLoginData.rejected, (state) => {
-        state.authStatus = 'failed';
+        state.authStatus = 'error';
       });
   },
 });

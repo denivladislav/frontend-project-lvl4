@@ -18,6 +18,8 @@ const RemoveChannel = ({ channel, loadingStatus }) => {
     dispatch(closeModal());
   };
 
+  const loadingError = loadingStatus === 'error';
+
   return (
     <Modal centered show onHide={() => dispatch(closeModal())}>
       <Modal.Header closeButton>
@@ -30,7 +32,7 @@ const RemoveChannel = ({ channel, loadingStatus }) => {
         <Button variant="secondary" onClick={() => dispatch(closeModal())}>
           {t('modal.cancel')}
         </Button>
-        <Button disabled={loadingStatus === 'failed'} variant="danger" onClick={handleRemoveChannel}>
+        <Button disabled={loadingError} variant="danger" onClick={handleRemoveChannel}>
           {t('modal.submit')}
         </Button>
       </Modal.Footer>

@@ -18,8 +18,9 @@ const SignUpForm = () => {
   const auth = useAuth();
   const history = useHistory();
   const inputRef = useRef();
-  const [signUpFailed, setSignUpFailed] = useState(false);
   const [t] = useTranslation();
+
+  const [signUpFailed, setSignUpFailed] = useState(false);
 
   useEffect(() => {
     inputRef.current.focus();

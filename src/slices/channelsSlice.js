@@ -49,13 +49,13 @@ export const channelsSlice = createSlice({
         state.channels = payload.channels;
         state.currentChannelId = payload.currentChannelId;
         state.username = payload.username;
-        state.loadingStatus = 'finished';
+        state.loadingStatus = 'success';
       })
       .addCase(fetchChatData.pending, (state) => {
         state.loadingStatus = 'loading';
       })
       .addCase(fetchChatData.rejected, (state) => {
-        state.loadingStatus = 'failed';
+        state.loadingStatus = 'error';
       });
   },
 });
