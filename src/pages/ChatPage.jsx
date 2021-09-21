@@ -6,8 +6,8 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchChatData } from '../slices/channelsSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
-import getModal from './modals/index.js';
-import ChatBox from './ChatBox.jsx';
+import getModal from '../components/modals/index.js';
+import ChatBox from '../components/ChatBox.jsx';
 import { selectChannelsNames } from '../selectors.js';
 
 const Modal = ({ username, modalType, loadingStatus }) => {

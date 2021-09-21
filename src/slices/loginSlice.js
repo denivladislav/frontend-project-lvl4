@@ -12,7 +12,7 @@ export const postLoginData = createAsyncThunk(
 );
 
 const initialState = {
-  authStatus: '',
+  authStatus: 'initial',
   authData: null,
 };
 
@@ -21,7 +21,7 @@ export const loginSlice = createSlice({
   initialState,
   reducers: {
     setDefaultAuthStatus: (state) => {
-      state.authStatus = '';
+      state.authStatus = 'initial';
     },
   },
   extraReducers: (builder) => {

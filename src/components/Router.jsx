@@ -13,10 +13,10 @@ import {
   Col,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import LoginPage from './LoginPage.jsx';
-import NotFoundPage from './NotFoundPage.jsx';
-import ChatPage from './ChatPage.jsx';
-import SignUpPage from './SignUpPage.jsx';
+import LoginPage from '../pages/LoginPage.jsx';
+import NotFoundPage from '../pages/NotFoundPage.jsx';
+import ChatPage from '../pages/ChatPage.jsx';
+import SignUpPage from '../pages/SignUpPage.jsx';
 import authContext from '../contexts/authContext.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
