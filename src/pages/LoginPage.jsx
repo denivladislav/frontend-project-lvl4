@@ -39,7 +39,7 @@ const LoginForm = () => {
     }
   }, [authStatus]);
 
-  const LoginSchema = Yup.object().shape({
+  const loginSchema = Yup.object().shape({
     username: Yup.string()
       .required('required'),
     password: Yup.string()
@@ -52,7 +52,7 @@ const LoginForm = () => {
       password: '',
     },
     validateOnBlur: false,
-    validationSchema: LoginSchema,
+    validationSchema: loginSchema,
     onSubmit: (values) => {
       dispatch(postLoginData({ values }));
       formik.setSubmitting(false);

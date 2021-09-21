@@ -23,7 +23,7 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
     inputRef.current.select();
   }, []);
 
-  const RenameChannelSchema = Yup.object().shape({
+  const renameChannelSchema = Yup.object().shape({
     name: Yup.mixed()
       .notOneOf(channelsNames, 'duplicatedChannel')
       .required('required'),
@@ -33,7 +33,7 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
     initialValues: {
       name: channel.name,
     },
-    validationSchema: RenameChannelSchema,
+    validationSchema: renameChannelSchema,
     onSubmit: (values) => {
       api.renameChannel(channel.id, values.name);
       dispatch(closeModal());

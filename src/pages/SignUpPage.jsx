@@ -25,7 +25,7 @@ const SignUpForm = () => {
     inputRef.current.focus();
   }, []);
 
-  const SignUpSchema = Yup.object().shape({
+  const signUpSchema = Yup.object().shape({
     username: Yup.string()
       .min(3, 'invalidUsernameLength')
       .max(20, 'invalidUsernameLength')
@@ -45,7 +45,7 @@ const SignUpForm = () => {
       passwordConfirmation: '',
     },
     validateOnBlur: false,
-    validationSchema: SignUpSchema,
+    validationSchema: signUpSchema,
     onSubmit: async (values, { resetForm }) => {
       setSignUpFailed(false);
       try {

@@ -23,7 +23,7 @@ const AddChannelForm = ({ channelsNames, username }) => {
     inputRef.current.focus();
   }, []);
 
-  const AddChannelSchema = Yup.object().shape({
+  const addChannelSchema = Yup.object().shape({
     name: Yup.mixed()
       .notOneOf(channelsNames, 'duplicatedChannel')
       .required('required'),
@@ -33,7 +33,7 @@ const AddChannelForm = ({ channelsNames, username }) => {
     initialValues: {
       name: '',
     },
-    validationSchema: AddChannelSchema,
+    validationSchema: addChannelSchema,
     onSubmit: (values) => {
       api.addChannel({ name: values.name, username });
       dispatch(closeModal());
