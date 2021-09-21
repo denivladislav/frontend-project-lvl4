@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Row,
   Spinner,
@@ -27,13 +28,16 @@ const Modal = ({ username, modalType, loadingStatus }) => {
     : null;
 };
 
-const LoadingSpinner = () => (
-  <Row className="h-100 align-items-center justify-content-center">
-    <Spinner animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
-  </Row>
-);
+const LoadingSpinner = () => {
+  const [t] = useTranslation();
+  return (
+    <Row className="h-100 align-items-center justify-content-center">
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">{t('spinner.loading')}</span>
+      </Spinner>
+    </Row>
+  );
+};
 
 const ChatPage = () => {
   const dispatch = useDispatch();
