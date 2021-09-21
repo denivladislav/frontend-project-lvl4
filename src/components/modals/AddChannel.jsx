@@ -40,7 +40,7 @@ const AddChannelForm = ({ channelsNames, username }) => {
     },
   });
 
-  const isNameInvalid = formik.touched.name && formik.errors.name;
+  const isNameValid = !(formik.touched.name && formik.errors.name);
 
   return (
     <Form onSubmit={formik.handleSubmit}>
@@ -52,10 +52,10 @@ const AddChannelForm = ({ channelsNames, username }) => {
           name="name"
           id="name"
           ref={inputRef}
-          isInvalid={isNameInvalid}
+          isInvalid={!isNameValid}
         />
         <Form.Control.Feedback type="invalid">
-          {isNameInvalid
+          {!isNameValid
             ? t(`errors.${formik.errors.name}`)
             : null}
         </Form.Control.Feedback>

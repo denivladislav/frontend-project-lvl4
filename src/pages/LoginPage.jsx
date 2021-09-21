@@ -60,8 +60,8 @@ const LoginForm = () => {
   });
 
   const authFailed = authStatus === 'failed';
-  const isUsernameInvalid = formik.touched.username && formik.errors.username;
-  const isPasswordInvaild = formik.touched.password && formik.errors.password;
+  const isUsernameValid = !(formik.touched.username && formik.errors.username);
+  const isPasswordValid = !(formik.touched.password && formik.errors.password);
 
   return (
     <Form onSubmit={formik.handleSubmit} className="p-2">
@@ -75,10 +75,10 @@ const LoginForm = () => {
           id="username"
           autoComplete="username"
           ref={inputRef}
-          isInvalid={authFailed || isUsernameInvalid}
+          isInvalid={authFailed || !isUsernameValid}
         />
         <Form.Control.Feedback type="invalid">
-          {isUsernameInvalid
+          {!isUsernameValid
             ? t(`errors.${formik.errors.username}`)
             : null}
         </Form.Control.Feedback>
@@ -93,10 +93,10 @@ const LoginForm = () => {
           name="password"
           id="password"
           autoComplete="current-password"
-          isInvalid={authFailed || isPasswordInvaild}
+          isInvalid={authFailed || !isPasswordValid}
         />
         <Form.Control.Feedback type="invalid">
-          {isPasswordInvaild
+          {!isPasswordValid
             ? t(`errors.${formik.errors.password}`)
             : null}
         </Form.Control.Feedback>
