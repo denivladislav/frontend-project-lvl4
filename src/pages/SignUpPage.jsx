@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import {
@@ -19,8 +19,6 @@ const SignUpForm = () => {
   const history = useHistory();
   const inputRef = useRef();
   const [t] = useTranslation();
-
-  const [signUpFailed, setSignUpFailed] = useState(false);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -45,10 +43,13 @@ const SignUpForm = () => {
       password: '',
       passwordConfirmation: '',
     },
+    initialStatus: {
+      signUpFailed: false,
+    },
     validateOnBlur: false,
     validationSchema: signUpSchema,
-    onSubmit: async (values, { resetForm }) => {
-      setSignUpFailed(false);
+    onSubmit: async (values, { resetForm, setStatus }) => {
+      setStatus({ signUpFailed: false });
       try {
         const res = await axios.post(routes.signUpPath(), values);
         auth.logIn(res.data);
@@ -56,13 +57,14 @@ const SignUpForm = () => {
         resetForm();
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
-          setSignUpFailed(true);
+          setStatus({ signUpFailed: true });
           inputRef.current.select();
         }
       }
     },
   });
 
+  const { signUpFailed } = formik.status;
   const isUsernameValid = !(formik.touched.username && formik.errors.username);
   const isPasswordValid = !(formik.touched.password && formik.errors.password);
   const isPasswordConfirmationValid = !(formik.touched.passwordConfirmation

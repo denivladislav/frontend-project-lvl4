@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import useAuth from '../hooks/useAuth.jsx';
-import { postLoginData, setDefaultAuthStatus } from '../slices/loginSlice.js';
+import { postLoginData, setAuthStatus } from '../slices/loginSlice.js';
 
 const LoginForm = () => {
   const inputRef = useRef();
@@ -32,7 +32,7 @@ const LoginForm = () => {
     if (authStatus === 'success') {
       auth.logIn(authData);
       history.replace('/');
-      dispatch(setDefaultAuthStatus());
+      dispatch(setAuthStatus({ authStatus: 'initial' }));
     }
     if (authStatus === 'error') {
       inputRef.current.select();

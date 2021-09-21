@@ -20,8 +20,8 @@ export const loginSlice = createSlice({
   name: 'loginSlice',
   initialState,
   reducers: {
-    setDefaultAuthStatus: (state) => {
-      state.authStatus = 'initial';
+    setAuthStatus: (state, { payload }) => {
+      state.authStatus = payload.authStatus;
     },
   },
   extraReducers: (builder) => {
@@ -36,6 +36,6 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { setDefaultAuthStatus } = loginSlice.actions;
+export const { setAuthStatus } = loginSlice.actions;
 
 export default loginSlice.reducer;
