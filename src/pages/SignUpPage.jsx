@@ -82,9 +82,7 @@ const SignUpForm = () => {
           isInvalid={signUpFailed || !isUsernameValid}
         />
         <Form.Control.Feedback type="invalid">
-          {!isUsernameValid
-            ? t(`errors.${formik.errors.username}`)
-            : null}
+          {!isUsernameValid && t(`errors.${formik.errors.username}`)}
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="p-2 mx-2">
@@ -100,9 +98,7 @@ const SignUpForm = () => {
           isInvalid={signUpFailed || !isPasswordValid}
         />
         <Form.Control.Feedback type="invalid">
-          {!isPasswordValid
-            ? t(`errors.${formik.errors.password}`)
-            : null}
+          {!isPasswordValid && t(`errors.${formik.errors.password}`)}
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="p-2 mx-2">
@@ -118,14 +114,10 @@ const SignUpForm = () => {
           isInvalid={signUpFailed || !isPasswordConfirmationValid}
         />
         <Form.Control.Feedback type="invalid">
-          {!isPasswordConfirmationValid
-            ? t(`errors.${formik.errors.passwordConfirmation}`)
-            : null}
+          {!isPasswordConfirmationValid && t(`errors.${formik.errors.passwordConfirmation}`)}
         </Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">
-          {signUpFailed
-            ? t('errors.duplicatedUsername')
-            : null}
+          {signUpFailed && t('errors.duplicatedUsername')}
         </Form.Control.Feedback>
       </Form.Group>
       <Col className="text-center">

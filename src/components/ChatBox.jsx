@@ -163,7 +163,7 @@ const ChatBox = ({ username, modalType }) => {
         <Col className="flex-column d-flex h-100">
           <div className="bg-light mb-4 p-3 shadow-sm small">
             <b>
-              {currentChannel ? currentChannel.name : null}
+              {currentChannel && currentChannel.name}
             </b>
             <br />
             <span>

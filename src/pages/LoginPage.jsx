@@ -78,9 +78,7 @@ const LoginForm = () => {
           isInvalid={authFailed || !isUsernameValid}
         />
         <Form.Control.Feedback type="invalid">
-          {!isUsernameValid
-            ? t(`errors.${formik.errors.username}`)
-            : null}
+          {!isUsernameValid && t(`errors.${formik.errors.username}`)}
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="p-2 mx-2">
@@ -96,14 +94,10 @@ const LoginForm = () => {
           isInvalid={authFailed || !isPasswordValid}
         />
         <Form.Control.Feedback type="invalid">
-          {!isPasswordValid
-            ? t(`errors.${formik.errors.password}`)
-            : null}
+          {!isPasswordValid && t(`errors.${formik.errors.password}`)}
         </Form.Control.Feedback>
         <Form.Control.Feedback type="invalid">
-          {authFailed
-            ? t('errors.auth')
-            : null}
+          {authFailed && t('errors.auth')}
         </Form.Control.Feedback>
       </Form.Group>
       <Col className="text-center">

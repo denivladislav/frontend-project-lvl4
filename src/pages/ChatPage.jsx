@@ -15,17 +15,18 @@ const Modal = ({ username, modalType, loadingStatus }) => {
   const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
   const channelsNames = useSelector(selectChannelsNames);
   const ModalComponent = getModal(modalType);
-  return ModalComponent
-    ? (
-      <ModalComponent
-        username={username}
-        modalType={modalType}
-        channel={managedChannel}
-        channelsNames={channelsNames}
-        loadingStatus={loadingStatus}
-      />
-    )
-    : null;
+  if (!ModalComponent) {
+    return null;
+  }
+  return (
+    <ModalComponent
+      username={username}
+      modalType={modalType}
+      channel={managedChannel}
+      channelsNames={channelsNames}
+      loadingStatus={loadingStatus}
+    />
+  );
 };
 
 const LoadingSpinner = () => {
@@ -55,22 +56,24 @@ const ChatPage = () => {
     dispatch(fetchChatData({ header: auth.getAuthHeader(), username: auth.getUsername() }));
   }, []);
 
-  return loadingStatus === 'loading'
-    ? <LoadingSpinner />
-    : (
-      <>
-        <ChatBox
-          username={username}
-          modalType={modalType}
-        />
+  if (loadingStatus === 'loading') {
+    <LoadingSpinner />;
+  }
 
-        <Modal
-          username={username}
-          modalType={modalType}
-          loadingStatus={loadingStatus}
-        />
-      </>
-    );
+  return (
+    <>
+      <ChatBox
+        username={username}
+        modalType={modalType}
+      />
+
+      <Modal
+        username={username}
+        modalType={modalType}
+        loadingStatus={loadingStatus}
+      />
+    </>
+  );
 };
 
 export default ChatPage;
