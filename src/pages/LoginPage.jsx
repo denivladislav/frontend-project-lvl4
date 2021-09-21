@@ -116,8 +116,6 @@ const LoginForm = () => {
 
 const LoginPage = () => {
   const [t] = useTranslation();
-  const myState = useSelector((state) => state);
-  console.log(myState);
   return (
     <Row className="justify-content-center align-content-center h-100">
       <Col className="col-md-2 col-lg-6">

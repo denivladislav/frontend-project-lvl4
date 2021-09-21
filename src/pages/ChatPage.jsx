@@ -47,10 +47,6 @@ const ChatPage = () => {
   const loadingStatus = useSelector((state) => state.channelsData.loadingStatus);
   const modalType = useSelector((state) => state.modalInfo.modalType);
 
-  // this selector will not exist
-  const myState = useSelector((state) => state);
-  console.log(myState);
-
   useEffect(() => {
     dispatch(fetchChatData({ header: auth.getAuthHeader() }));
   }, []);
