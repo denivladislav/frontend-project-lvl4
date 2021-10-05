@@ -11,7 +11,7 @@ import { closeModal } from '../../slices/modalSlice.js';
 const RemoveChannel = ({ channel, loadingStatus }) => {
   const dispatch = useDispatch();
   const api = useApi();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const handleRemoveChannel = () => {
     api.removeChannel(channel.id);

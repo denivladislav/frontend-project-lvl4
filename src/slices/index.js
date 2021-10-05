@@ -4,7 +4,7 @@ import messagesReducer from './messagesSlice.js';
 import modalReducer from './modalSlice.js';
 import loginReducer from './loginSlice.js';
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     channelsData: channelsReducer,
     messagesData: messagesReducer,
@@ -12,3 +12,5 @@ export default configureStore({
     loginData: loginReducer,
   },
 });
+
+export default store;

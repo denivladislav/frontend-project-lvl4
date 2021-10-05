@@ -19,7 +19,7 @@ const LoginForm = () => {
   const auth = useAuth();
   const history = useHistory();
   const dispatch = useDispatch();
-  const [t] = useTranslation();
+  const {t} = useTranslation();
 
   const authStatus = useSelector((state) => state.loginData.authStatus);
   const authData = useSelector((state) => state.loginData.authData);
@@ -115,7 +115,7 @@ const LoginForm = () => {
 };
 
 const LoginPage = () => {
-  const [t] = useTranslation();
+  const {t} = useTranslation();
   return (
     <Row className="justify-content-center align-content-center h-100">
       <Col className="col-md-2 col-lg-6">

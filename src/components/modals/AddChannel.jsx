@@ -16,7 +16,7 @@ import { closeModal } from '../../slices/modalSlice.js';
 const AddChannelForm = ({ channelsNames }) => {
   const api = useApi();
   const inputRef = useRef();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const AddChannelForm = ({ channelsNames }) => {
 
 const AddChannel = ({ channelsNames, username }) => {
   const dispatch = useDispatch();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Modal centered show onHide={() => dispatch(closeModal())}>

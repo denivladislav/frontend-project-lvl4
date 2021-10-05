@@ -23,7 +23,7 @@ import { selectCurrentChannelMessages, selectCurrentChannel } from '../selectors
 const ChatForm = ({ username, currentChannelId, modalType }) => {
   const inputRef = useRef();
   const api = useApi();
-  const [t] = useTranslation();
+  const {t} = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -75,7 +75,7 @@ const ChatForm = ({ username, currentChannelId, modalType }) => {
 
 const ChannelsList = ({ channels, currentChannelId }) => {
   const dispatch = useDispatch();
-  const [t] = useTranslation();
+  const {t} = useTranslation();
 
   const DropdownComponent = ({ variant, dropdownClass, channel }) => {
     if (!channel.removable) {
@@ -124,7 +124,7 @@ const ChannelsList = ({ channels, currentChannelId }) => {
 
 const ChatBox = ({ username, modalType }) => {
   const dispatch = useDispatch();
-  const [t] = useTranslation();
+  const {t} = useTranslation();
   const lastMessageRef = useRef();
   const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);

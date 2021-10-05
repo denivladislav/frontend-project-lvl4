@@ -11,8 +11,7 @@ import getModal from '../components/modals/index.js';
 import ChatBox from '../components/ChatBox.jsx';
 import { selectChannelsNames } from '../selectors.js';
 
-const Modal = ({ modalType, loadingStatus }) => {
-  const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
+const Modal = ({ modalType, loadingStatus, managedChannel }) => {
   const channelsNames = useSelector(selectChannelsNames);
   const ModalComponent = getModal(modalType);
   if (!ModalComponent) {
@@ -29,7 +28,7 @@ const Modal = ({ modalType, loadingStatus }) => {
 };
 
 const LoadingSpinner = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return (
     <Row className="h-100 align-items-center justify-content-center">
       <Spinner animation="border" role="status">
@@ -46,6 +45,7 @@ const ChatPage = () => {
   const username = auth.getUsername();
   const loadingStatus = useSelector((state) => state.channelsData.loadingStatus);
   const modalType = useSelector((state) => state.modalInfo.modalType);
+  const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
 
   useEffect(() => {
     dispatch(fetchChatData({ header: auth.getAuthHeader() }));
@@ -65,6 +65,7 @@ const ChatPage = () => {
       <Modal
         modalType={modalType}
         loadingStatus={loadingStatus}
+        managedChannel={managedChannel}
       />
     </>
   );

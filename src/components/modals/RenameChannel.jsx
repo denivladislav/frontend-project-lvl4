@@ -17,7 +17,7 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const api = useApi();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.select();
@@ -74,7 +74,7 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
 
 const RenameChannel = ({ channelsNames, channel }) => {
   const dispatch = useDispatch();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Modal centered show onHide={() => dispatch(closeModal())}>
