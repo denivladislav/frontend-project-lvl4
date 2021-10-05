@@ -10,8 +10,11 @@ import useAuth from '../hooks/useAuth.jsx';
 import getModal from '../components/modals/index.js';
 import ChatBox from '../components/ChatBox.jsx';
 import { selectChannelsNames } from '../selectors.js';
+import { closeModal } from '../slices/modalSlice.js';
 
 const Modal = ({ modalType, loadingStatus, managedChannel }) => {
+  const dispatch = useDispatch();
+  const onHide = () => dispatch(closeModal());
   const channelsNames = useSelector(selectChannelsNames);
   const ModalComponent = getModal(modalType);
   if (!ModalComponent) {
@@ -23,6 +26,7 @@ const Modal = ({ modalType, loadingStatus, managedChannel }) => {
       channel={managedChannel}
       channelsNames={channelsNames}
       loadingStatus={loadingStatus}
+      onHide={onHide}
     />
   );
 };

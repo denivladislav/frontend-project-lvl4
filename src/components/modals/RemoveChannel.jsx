@@ -8,7 +8,7 @@ import {
 import useApi from '../../hooks/useApi.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 
-const RemoveChannel = ({ channel, loadingStatus }) => {
+const RemoveChannel = ({ channel, loadingStatus, onHide }) => {
   const dispatch = useDispatch();
   const api = useApi();
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ const RemoveChannel = ({ channel, loadingStatus }) => {
   const loadingError = loadingStatus === 'error';
 
   return (
-    <Modal centered show onHide={() => dispatch(closeModal())}>
+    <Modal centered show onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.removeHeader')}</Modal.Title>
       </Modal.Header>

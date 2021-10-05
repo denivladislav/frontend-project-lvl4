@@ -72,19 +72,18 @@ const AddChannelForm = ({ channelsNames }) => {
   );
 };
 
-const AddChannel = ({ channelsNames, username }) => {
-  const dispatch = useDispatch();
+const AddChannel = ({ channelsNames, onHide }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal centered show onHide={() => dispatch(closeModal())}>
+    <Modal centered show onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>
           {t('modal.addHeader')}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddChannelForm channelsNames={channelsNames} username={username} />
+        <AddChannelForm channelsNames={channelsNames} />
       </Modal.Body>
     </Modal>
   );

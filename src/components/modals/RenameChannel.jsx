@@ -72,12 +72,11 @@ const RenameChannelForm = ({ channelsNames, channel }) => {
   );
 };
 
-const RenameChannel = ({ channelsNames, channel }) => {
-  const dispatch = useDispatch();
+const RenameChannel = ({ channelsNames, channel, onHide }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal centered show onHide={() => dispatch(closeModal())}>
+    <Modal centered show onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.renameHeader')}</Modal.Title>
       </Modal.Header>
