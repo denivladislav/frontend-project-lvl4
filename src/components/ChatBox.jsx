@@ -18,12 +18,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { openModal } from '../slices/modalSlice.js';
 import { setCurrentChannel } from '../slices/channelsSlice.js';
 import useApi from '../hooks/useApi.jsx';
-import { selectCurrentChannelMessages, selectCurrentChannel } from '../selectors.js';
+import {
+  selectCurrentChannelMessages, selectCurrentChannel, selectedChannels, selectedCurrentChannelId,
+} from '../selectors.js';
 
 const ChatForm = ({ username, currentChannelId, modalType }) => {
   const inputRef = useRef();
   const api = useApi();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -75,7 +77,7 @@ const ChatForm = ({ username, currentChannelId, modalType }) => {
 
 const ChannelsList = ({ channels, currentChannelId }) => {
   const dispatch = useDispatch();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const DropdownComponent = ({ variant, dropdownClass, channel }) => {
     if (!channel.removable) {
@@ -124,10 +126,10 @@ const ChannelsList = ({ channels, currentChannelId }) => {
 
 const ChatBox = ({ username, modalType }) => {
   const dispatch = useDispatch();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const lastMessageRef = useRef();
-  const channels = useSelector((state) => state.channelsData.channels);
-  const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
+  const channels = useSelector(selectedChannels);
+  const currentChannelId = useSelector(selectedCurrentChannelId);
   const currentChannel = useSelector(selectCurrentChannel(currentChannelId));
   const currentChannelMessages = useSelector(selectCurrentChannelMessages(currentChannelId));
 

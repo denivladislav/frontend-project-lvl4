@@ -7,7 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 const NotFoundPage = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Row className="justify-content-center align-content-top p-2 h-100">
       <Col className="col-md-2 col-lg-6">

@@ -18,7 +18,7 @@ const SignUpForm = () => {
   const auth = useAuth();
   const history = useHistory();
   const inputRef = useRef();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -137,7 +137,7 @@ const SignUpForm = () => {
 };
 
 const SignUpPage = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Row className="justify-content-center align-content-center h-100">
       <Col className="col-md-2 col-lg-6">

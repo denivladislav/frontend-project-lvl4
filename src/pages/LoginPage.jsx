@@ -13,16 +13,19 @@ import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import useAuth from '../hooks/useAuth.jsx';
 import { postLoginData, setAuthStatus } from '../slices/loginSlice.js';
+import {
+  selectedAuthStatus, selectedAuthData,
+} from '../selectors.js';
 
 const LoginForm = () => {
   const inputRef = useRef();
   const auth = useAuth();
   const history = useHistory();
   const dispatch = useDispatch();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
-  const authStatus = useSelector((state) => state.loginData.authStatus);
-  const authData = useSelector((state) => state.loginData.authData);
+  const authStatus = useSelector(selectedAuthStatus);
+  const authData = useSelector(selectedAuthData);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -115,7 +118,7 @@ const LoginForm = () => {
 };
 
 const LoginPage = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Row className="justify-content-center align-content-center h-100">
       <Col className="col-md-2 col-lg-6">

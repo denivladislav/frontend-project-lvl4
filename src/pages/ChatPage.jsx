@@ -9,7 +9,10 @@ import { fetchChatData } from '../slices/channelsSlice.js';
 import useAuth from '../hooks/useAuth.jsx';
 import getModal from '../components/modals/index.js';
 import ChatBox from '../components/ChatBox.jsx';
-import { selectChannelsNames } from '../selectors.js';
+import {
+  selectedManagedChannel, selectedLoadingStatus,
+  selectedModalType, selectChannelsNames,
+} from '../selectors.js';
 import { closeModal } from '../slices/modalSlice.js';
 
 const Modal = ({ modalType, loadingStatus, managedChannel }) => {
@@ -47,9 +50,9 @@ const ChatPage = () => {
   const auth = useAuth();
 
   const username = auth.getUsername();
-  const loadingStatus = useSelector((state) => state.channelsData.loadingStatus);
-  const modalType = useSelector((state) => state.modalInfo.modalType);
-  const managedChannel = useSelector((state) => state.modalInfo.managedChannel);
+  const loadingStatus = useSelector(selectedLoadingStatus);
+  const modalType = useSelector(selectedModalType);
+  const managedChannel = useSelector(selectedManagedChannel);
 
   useEffect(() => {
     dispatch(fetchChatData({ header: auth.getAuthHeader() }));

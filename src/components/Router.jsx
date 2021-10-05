@@ -22,7 +22,7 @@ import useAuth from '../hooks/useAuth.jsx';
 
 const AuthButton = () => {
   const auth = useContext(authContext);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     auth.loggedIn
@@ -45,7 +45,7 @@ const ChatRoute = ({ children, path }) => {
 };
 
 const Router = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <BrowserRouter>
       <Col className="d-flex flex-column h-100">
