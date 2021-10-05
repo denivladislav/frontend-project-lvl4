@@ -49,7 +49,7 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
 
-  const username = auth.getUsername();
+  const { username } = auth;
   const loadingStatus = useSelector(selectedLoadingStatus);
   const modalType = useSelector(selectedModalType);
   const managedChannel = useSelector(selectedManagedChannel);
