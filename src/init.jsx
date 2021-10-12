@@ -57,7 +57,7 @@ export default async (socket = io()) => {
   const api = initApi(socket, store);
 
   const rollbarConfig = {
-    accessToken: process.env.ROLLBAR_TOKEN,
+    accessToken: '7363e2783f55410eae00e47508c66796',
     enabled: process.env.NODE_ENV === 'production',
     environment: 'production',
     captureUncaught: true,
