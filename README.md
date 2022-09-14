@@ -20,9 +20,8 @@ $ make install
 # Билд проекта
 $ make build
 
-# Режим разработки
-$ make develop
-
+# Хост
+localhost:5000
 ```
 
 ### Деплой
